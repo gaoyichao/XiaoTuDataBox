@@ -42,6 +42,7 @@ T* TEMPLATE_FUNCTION(array, find)(TEMPLATE_TYPE(array) *a, T v);
 int TEMPLATE_FUNCTION(array, find_idx)(TEMPLATE_TYPE(array) *a, T v);
 
 int TEMPLATE_FUNCTION(array, insert)(TEMPLATE_TYPE(array) *a, int i, T v);
+int TEMPLATE_FUNCTION(array, insert_section)(TEMPLATE_TYPE(array) *a, int i, T const *data, int len);
 
 int TEMPLATE_FUNCTION(array, remove)(TEMPLATE_TYPE(array) *a, int i);
 int TEMPLATE_FUNCTION(array, remove_section)(TEMPLATE_TYPE(array) *a, int from, int to);

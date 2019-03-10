@@ -251,6 +251,23 @@ int TEMPLATE_FUNCTION(array, insert)(TEMPLATE_TYPE(array) *a, int i, T v)
     a->stor_begin[i] = v;
     return 0;
 }
+
+
+int TEMPLATE_FUNCTION(array, insert_section)(TEMPLATE_TYPE(array) *a, int i, T const *data, int len)
+{
+    int size = TEMPLATE_FUNCTION(array, size)(a);
+    if (i > size)
+        return 1;
+
+    TEMPLATE_FUNCTION(array, resize)(a, size + len);
+
+    if (i < size)
+        memmove(a->stor_begin+i+len, a->stor_begin+i, sizeof(T)*(size - i));
+
+
+    memcpy(a->stor_begin+i, data, (size_t)len * sizeof(T));
+    return 0;
+}
 /*
  * array_T_remove_section - 从数组a中删除[from, to)位置上的元素 
  *

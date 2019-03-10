@@ -1,3 +1,14 @@
+
+# 小土的数据工具箱
+
+## 使用方式:
+* git clone https://github.com/gaoyichao/XiaoTuDataBox.git
+* cd XiaoTuDataBox
+* make
+* ./build/t_${target}.exe
+
+---
+
 # [数据结构与算法](http://gaoyichao.com/Xiaotu/?book=data_and_algorithm&title=index)
 
 这个系列的文章也是《[一个嵌入式操作系统的实现](http://gaoyichao.com/Xiaotu/?book=XiaoTuOS&title=index)》系列文章的基础。 

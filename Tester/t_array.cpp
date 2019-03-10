@@ -146,6 +146,16 @@ TEST(array, insert)
     EXPECT_EQ(ARRAY(array0)[3], datas[2]);
     EXPECT_EQ(ARRAY(array0)[4], datas[3]);
 
+    array_double_insert_section(&array0, 2, datas, 4);
+    EXPECT_EQ(array_double_size(&array0), 9);
+    EXPECT_EQ(ARRAY(array0)[0], datas[0]);
+    EXPECT_EQ(ARRAY(array0)[1], datas[1]);
+    for (int i = 0; i < 4; i++)
+        EXPECT_EQ(ARRAY(array0)[2 + i], datas[i]);
+
+    EXPECT_EQ(ARRAY(array0)[6], 3.1415926);
+    EXPECT_EQ(ARRAY(array0)[7], datas[2]);
+    EXPECT_EQ(ARRAY(array0)[8], datas[3]);
 
     array_double_destroy(&array0);
 }
