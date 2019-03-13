@@ -28,7 +28,7 @@ bool TEMPLATE_FUNCTION(array, empty)(TEMPLATE_TYPE(array) *a);
 bool TEMPLATE_FUNCTION(array, full)(TEMPLATE_TYPE(array) *a);
 
 int TEMPLATE_FUNCTION(array, adjust_capacity)(TEMPLATE_TYPE(array) *a, int c);
-int TEMPLATE_FUNCTION(array, size)(TEMPLATE_TYPE(array) *a, int size);
+int TEMPLATE_FUNCTION(array, resize)(TEMPLATE_TYPE(array) *a, int size);
 void TEMPLATE_FUNCTION(array, destroy)(TEMPLATE_TYPE(array) *a);
 
 #define ARRAY(a) ((a).stor_begin)
@@ -36,12 +36,15 @@ T TEMPLATE_FUNCTION(array, e)(TEMPLATE_TYPE(array) const *a, int i);
 T* TEMPLATE_FUNCTION(array, e_ptr)(TEMPLATE_TYPE(array) *a, int i);
 T const * TEMPLATE_FUNCTION(array, e_cptr)(TEMPLATE_TYPE(array) const *a, int i);
 void TEMPLATE_FUNCTION(array, set)(TEMPLATE_TYPE(array) *a, int i, T v);
-void TEMPLATE_FUNCTION(array, set_interval)(TEMPLATE_TYPE(array) *a, int i, T v);
+void TEMPLATE_FUNCTION(array, ptr_set)(TEMPLATE_TYPE(array) *a, int i, T const *v);
 
 T* TEMPLATE_FUNCTION(array, find)(TEMPLATE_TYPE(array) *a, T v);
+T* TEMPLATE_FUNCTION(array, ptr_find)(TEMPLATE_TYPE(array) *a, T const *v);
 int TEMPLATE_FUNCTION(array, find_idx)(TEMPLATE_TYPE(array) *a, T v);
+int TEMPLATE_FUNCTION(array, ptr_find_idx)(TEMPLATE_TYPE(array) *a, T const *v);
 
 int TEMPLATE_FUNCTION(array, insert)(TEMPLATE_TYPE(array) *a, int i, T v);
+int TEMPLATE_FUNCTION(array, ptr_insert)(TEMPLATE_TYPE(array) *a, int i, T const *v);
 int TEMPLATE_FUNCTION(array, insert_section)(TEMPLATE_TYPE(array) *a, int i, T const *data, int len);
 
 int TEMPLATE_FUNCTION(array, remove)(TEMPLATE_TYPE(array) *a, int i);

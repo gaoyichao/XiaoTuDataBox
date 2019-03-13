@@ -18,6 +18,7 @@ TEST(array, init)
     EXPECT_TRUE(array_double_empty(&array0));
     EXPECT_FALSE(array_double_full(&array0));
     EXPECT_GT(array_double_capacity(&array0), 0);
+    EXPECT_EQ(array_double_available(&array0), 1);
 
     array_double_destroy(&array0);
 }
@@ -62,6 +63,10 @@ TEST(array, element)
     array_double_set(&array0, 0, 1.414);
     EXPECT_EQ(array_double_e(&array0, 0), 1.414);
 
+    double tmp = 101.01;
+    array_double_ptr_set(&array0, 0, &tmp);
+    EXPECT_EQ(array_double_e(&array0, 0), tmp);
+
     const double *ptr1 = array_double_e_cptr(&array0, 1);
     EXPECT_EQ(*ptr1, ARRAY(array0)[1]);
 
@@ -82,7 +87,7 @@ TEST(array, resize)
 
     array_double_adjust_capacity(&array0, 9);
     EXPECT_EQ(array_double_capacity(&array0), 9);
-    EXPECT_EQ(array_double_avaliable(&array0), 5);
+    EXPECT_EQ(array_double_available(&array0), 5);
 
     for (int i = 0; i < 4; i++) {
         EXPECT_EQ(ARRAY(array0)[i], datas[i]);
@@ -114,13 +119,20 @@ TEST(array, find)
 
     double *ptr = array_double_find(&array0, datas[3]);
     int idx = array_double_find_idx(&array0, datas[3]);
-    EXPECT_EQ(*ptr, datas[3]);
+    EXPECT_EQ(ptr, &(ARRAY(array0)[idx]));
     EXPECT_EQ(idx, 3);
 
-    ptr = array_double_find(&array0, 3.1415926);
-    idx = array_double_find_idx(&array0, 3.1415926);
+    double pi = 3.1415926;
+    ptr = array_double_ptr_find(&array0, &pi);
+    idx = array_double_ptr_find_idx(&array0, &pi);
     EXPECT_EQ(NULL, ptr);
     EXPECT_EQ(-1, idx);
+
+    pi = 3.2;
+    ptr = array_double_ptr_find(&array0, &pi);
+    idx = array_double_ptr_find_idx(&array0, &pi);
+    EXPECT_EQ(ptr, &(ARRAY(array0)[idx]));
+    EXPECT_EQ(idx, 1);
 
     array_double_destroy(&array0);
 }
@@ -138,7 +150,8 @@ TEST(array, insert)
     EXPECT_EQ(array_double_size(&array0), 4);
     EXPECT_GT(array_double_capacity(&array0), 0);
 
-    array_double_insert(&array0, 2, 3.1415926);
+    double pi = 3.1415926;
+    array_double_ptr_insert(&array0, 2, &pi);
     EXPECT_EQ(array_double_size(&array0), 5);
     EXPECT_EQ(ARRAY(array0)[0], datas[0]);
     EXPECT_EQ(ARRAY(array0)[1], datas[1]);
@@ -156,6 +169,15 @@ TEST(array, insert)
     EXPECT_EQ(ARRAY(array0)[6], 3.1415926);
     EXPECT_EQ(ARRAY(array0)[7], datas[2]);
     EXPECT_EQ(ARRAY(array0)[8], datas[3]);
+
+    EXPECT_EQ(array_double_insert(&array0, 10, 10), 1);
+
+    for (int i = 9; i < 64; i++)
+        array_double_insert(&array0, i, i);
+
+    for (int i = 9; i < 64; i++)
+        EXPECT_EQ(ARRAY(array0)[i], i);
+
 
     array_double_destroy(&array0);
 }
@@ -175,11 +197,6 @@ TEST(array, remove)
 
     array_double_insert(&array0, 2, 3.1415926);
     EXPECT_EQ(array_double_size(&array0), 5);
-    EXPECT_EQ(ARRAY(array0)[0], datas[0]);
-    EXPECT_EQ(ARRAY(array0)[1], datas[1]);
-    EXPECT_EQ(ARRAY(array0)[2], 3.1415926);
-    EXPECT_EQ(ARRAY(array0)[3], datas[2]);
-    EXPECT_EQ(ARRAY(array0)[4], datas[3]);
 
     array_double_remove(&array0, 2);
     EXPECT_EQ(array_double_size(&array0), 4);
@@ -188,6 +205,20 @@ TEST(array, remove)
     EXPECT_EQ(ARRAY(array0)[2], datas[2]);
     EXPECT_EQ(ARRAY(array0)[3], datas[3]);
 
+    array_double_insert_section(&array0, 2, datas, 4);
+    EXPECT_EQ(array_double_size(&array0), 8);
+
+    array_double_remove_section(&array0, 2, 2+4);
+    EXPECT_EQ(array_double_size(&array0), 4);
+    EXPECT_EQ(ARRAY(array0)[0], datas[0]);
+    EXPECT_EQ(ARRAY(array0)[1], datas[1]);
+    EXPECT_EQ(ARRAY(array0)[2], datas[2]);
+    EXPECT_EQ(ARRAY(array0)[3], datas[3]);
+
+    array_double_insert_section(&array0, 2, datas, 4);
+    EXPECT_EQ(array_double_size(&array0), 8);
+    EXPECT_EQ(array_double_remove_section(&array0, 6, 2), 1);
+    EXPECT_EQ(array_double_remove(&array0, 8), 2);
 
     array_double_destroy(&array0);
 }

@@ -74,11 +74,11 @@ int TEMPLATE_FUNCTION(array, size)(TEMPLATE_TYPE(array) *a)
 }
 
 /*
- * array_T_avaliable - 获取array的可用空间大小 
+ * array_T_available - 获取array的可用空间大小 
  *
  * @a: array对象
  */
-int TEMPLATE_FUNCTION(array, avaliable)(TEMPLATE_TYPE(array) *a)
+int TEMPLATE_FUNCTION(array, available)(TEMPLATE_TYPE(array) *a)
 {
     return a->stor_end - a->end;
 }
@@ -190,15 +190,27 @@ T const * TEMPLATE_FUNCTION(array, e_cptr)(TEMPLATE_TYPE(array) const *a, int i)
     return a->stor_begin + i;
 }
 /*
- * array_T_e_ptr - 获取第i个元素地址
+ * array_T_set - 设定第i个元素的值
  *
  * @a: array对象
+ * @i: 目标元素索引
+ * @v: 目标值
  */
 void TEMPLATE_FUNCTION(array, set)(TEMPLATE_TYPE(array) *a, int i, T v)
 {
     a->stor_begin[i] = v;
 }
-
+/*
+ * array_T_ptr_set - 设定第i个元素的值
+ *
+ * @a: array对象
+ * @i: 目标元素索引
+ * @v: 目标值指针
+ */
+void TEMPLATE_FUNCTION(array, ptr_set)(TEMPLATE_TYPE(array) *a, int i, T const *v)
+{
+    a->stor_begin[i] = *v;
+}
 /*
  * array_T_find - 搜索数组中第一个值为v的元素，并返回指针
  *
@@ -209,6 +221,22 @@ T* TEMPLATE_FUNCTION(array, find)(TEMPLATE_TYPE(array) *a, T v)
 {
     for (T *p = a->stor_begin; p < a->end; p++) {
         if (v == *p)
+            return p;
+    }
+
+    return NULL;
+}
+
+/*
+ * array_T_ptr_find - 搜索数组中第一个值为v的元素，并返回指针
+ *
+ * @a: array对象
+ * @v: 目标值指针
+ */
+T* TEMPLATE_FUNCTION(array, ptr_find)(TEMPLATE_TYPE(array) *a, T const *v)
+{
+    for (T *p = a->stor_begin; p < a->end; p++) {
+        if (*v == *p)
             return p;
     }
 
@@ -230,7 +258,22 @@ int TEMPLATE_FUNCTION(array, find_idx)(TEMPLATE_TYPE(array) *a, T v)
 
     return -1;
 }
+/*
+ * array_T_ptr_find_idx - 搜索数组中第一个值为v的元素，并返回索引值
+ *
+ * @a: array对象
+ * @v: 目标值指针
+ */
+int TEMPLATE_FUNCTION(array, ptr_find_idx)(TEMPLATE_TYPE(array) *a, T const *v)
+{
+    int size = TEMPLATE_FUNCTION(array, size)(a);
 
+    for (int i = 0; i < size; i++)
+        if (*v == a->stor_begin[i])
+            return i;
+
+    return -1;
+}
 /*
  * array_T_insert - 向数组a中的第i个位置上插入元素V 
  *
@@ -252,6 +295,26 @@ int TEMPLATE_FUNCTION(array, insert)(TEMPLATE_TYPE(array) *a, int i, T v)
     return 0;
 }
 
+/*
+ * array_T_ptr_insert - 向数组a中的第i个位置上插入元素V 
+ *
+ * @a: array对象
+ * @i: 目标索引[0,n]
+ * @v: 目标值指针
+ */
+int TEMPLATE_FUNCTION(array, ptr_insert)(TEMPLATE_TYPE(array) *a, int i, T const *v)
+{
+    int size = TEMPLATE_FUNCTION(array, size)(a);
+    if (i > size)
+        return 1;
+
+    TEMPLATE_FUNCTION(array, resize)(a, size + 1);
+    if (i < size)
+        memmove(a->stor_begin+i+1, a->stor_begin+i, sizeof(T)*(size - i));
+
+    a->stor_begin[i] = *v;
+    return 0;
+}
 
 int TEMPLATE_FUNCTION(array, insert_section)(TEMPLATE_TYPE(array) *a, int i, T const *data, int len)
 {
