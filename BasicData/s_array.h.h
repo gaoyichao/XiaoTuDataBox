@@ -25,6 +25,8 @@ int TEMPLATE_FUNCTION(s_array, available)(TEMPLATE_TYPE(s_array) *a);
 bool TEMPLATE_FUNCTION(s_array, empty)(TEMPLATE_TYPE(s_array) *a);
 bool TEMPLATE_FUNCTION(s_array, full)(TEMPLATE_TYPE(s_array) *a);
 
+void TEMPLATE_FUNCTION(s_array, clear)(TEMPLATE_TYPE(s_array) *a);
+
 #define ARRAY(a) ((a).stor_begin)
 T TEMPLATE_FUNCTION(s_array, e)(TEMPLATE_TYPE(s_array) const *a, int i);
 T* TEMPLATE_FUNCTION(s_array, e_ptr)(TEMPLATE_TYPE(s_array) *a, int i);

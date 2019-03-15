@@ -80,7 +80,13 @@ bool TEMPLATE_FUNCTION(s_array, full)(TEMPLATE_TYPE(s_array) *a)
 {
     return a->end == a->stor_end;
 }
-
+/*
+ * s_array_T_clear - 清空s_array
+ */
+void TEMPLATE_FUNCTION(s_array, clear)(TEMPLATE_TYPE(s_array) *a)
+{
+    a->end = a->stor_begin;
+}
 /*
  * s_array_T_e - 获取第i个元素值 
  *

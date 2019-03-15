@@ -138,12 +138,20 @@ int TEMPLATE_FUNCTION(array, adjust_capacity)(TEMPLATE_TYPE(array) *a, int c)
 int TEMPLATE_FUNCTION(array, resize)(TEMPLATE_TYPE(array) *a, int size)
 {
     int cap = TEMPLATE_FUNCTION(array, capacity)(a);
-    while (cap < size) {
-        TEMPLATE_FUNCTION(array, adjust_capacity)(a, 2*cap);
-        cap = TEMPLATE_FUNCTION(array, capacity)(a);
-    }
+    while (cap < size)
+        cap = 2 * cap;
+
+    TEMPLATE_FUNCTION(array, adjust_capacity)(a, cap);
+
     a->end = a->stor_begin + size;
     return 0;
+}
+/*
+ * array_T_clear - 清空array
+ */
+void TEMPLATE_FUNCTION(array, clear)(TEMPLATE_TYPE(array) *a)
+{
+    a->end = a->stor_begin;
 }
 /*
  * array_T_destroy - 销毁array对象
@@ -315,7 +323,14 @@ int TEMPLATE_FUNCTION(array, ptr_insert)(TEMPLATE_TYPE(array) *a, int i, T const
     a->stor_begin[i] = *v;
     return 0;
 }
-
+/*
+ * array_T_ptr_insert_section - 向数组a中的第i个位置上插入len个元素
+ *
+ * @a: array对象
+ * @i: 目标索引[0,n]
+ * @data: 元素缓存 
+ * @len: 元素数量
+ */
 int TEMPLATE_FUNCTION(array, insert_section)(TEMPLATE_TYPE(array) *a, int i, T const *data, int len)
 {
     int size = TEMPLATE_FUNCTION(array, size)(a);

@@ -101,6 +101,10 @@ TEST(array, resize)
         EXPECT_EQ(ARRAY(array0)[i], datas[i]);
     }
 
+    array_double_clear(&array0);
+    EXPECT_EQ(array_double_size(&array0), 0);
+
+
     array_double_destroy(&array0);
 }
 

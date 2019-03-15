@@ -29,6 +29,7 @@ bool TEMPLATE_FUNCTION(array, full)(TEMPLATE_TYPE(array) *a);
 
 int TEMPLATE_FUNCTION(array, adjust_capacity)(TEMPLATE_TYPE(array) *a, int c);
 int TEMPLATE_FUNCTION(array, resize)(TEMPLATE_TYPE(array) *a, int size);
+void TEMPLATE_FUNCTION(array, clear)(TEMPLATE_TYPE(array) *a);
 void TEMPLATE_FUNCTION(array, destroy)(TEMPLATE_TYPE(array) *a);
 
 #define ARRAY(a) ((a).stor_begin)

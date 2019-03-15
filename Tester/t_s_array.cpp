@@ -21,6 +21,9 @@ TEST(s_array, init)
     EXPECT_FALSE(s_array_double_full(&array));
     EXPECT_EQ(s_array_double_capacity(&array), 64);
     EXPECT_EQ(s_array_double_available(&array), 64);
+
+    s_array_double_clear(&array);
+    EXPECT_EQ(s_array_double_size(&array), 0);
 }
 
 TEST(s_array, element)
