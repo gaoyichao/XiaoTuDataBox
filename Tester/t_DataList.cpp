@@ -137,4 +137,26 @@ TEST(DataList, insert_remove)
 }
 
 
+TEST(DataList, stack)
+{
+    DataList<double> stack;
+    double tmp = 0;
+    
+    stack.push(1.2);
+
+    EXPECT_EQ(stack.size(), 1);
+    EXPECT_EQ(stack.pop(), 1.2);
+
+    stack.push(1.3);
+    EXPECT_EQ(stack.size(), 1);
+    stack.pop(tmp);
+    EXPECT_EQ(tmp, 1.3);
+
+    stack.push_end(1.4);
+    EXPECT_EQ(stack.size(), 1);
+    stack.pop_end(tmp);
+    EXPECT_EQ(tmp, 1.4);
+}
+
+
 

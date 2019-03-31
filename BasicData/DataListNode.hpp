@@ -34,6 +34,11 @@ class DataListNode {
         T & data_next() { return next->key; }
         T const & data_next() const { return next->key; }
     public:
+        void init() {
+            this->next = this;
+            this->prev = this;
+        }
+
         void add(DataListNode * n) {
             this->next->prev = n;
             n->next = this->next;

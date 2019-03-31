@@ -74,6 +74,7 @@ class DataList {
                 cur = next;
                 next = cur->next;
             }
+            mHead.init();
         }
 
         DataListNode<T> * insert(DataListNode<T> * node, T const & v) {
@@ -98,8 +99,37 @@ class DataList {
             return 0;
         }
 
+        DataListNode<T> * push(T const & v) {
+            return insert(mHead.next, v);
+        }
 
-    private:
+        T pop() {
+            T re = mHead.next->key;
+            remove(mHead.next);
+            return re;
+        }
+
+        void pop(T & re) {
+            re = mHead.next->key;
+            remove(mHead.next);
+        }
+
+        DataListNode<T> * push_end(T const & v) {
+            return insert(mHead.prev, v);
+        }
+
+        T pop_end() {
+            T re = mHead.prev->key;
+            remove(mHead.prev);
+            return re;
+        }
+
+        void pop_end(T & re) {
+            re = mHead.prev->key;
+            remove(mHead.prev);
+        }
+
+    protected:
         DataListNode<T> mHead;
         int mSize;
 };
