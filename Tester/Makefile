@@ -21,7 +21,7 @@ ${OUTPUT_PATH}/t_s_array.exe: objs
 	g++ t_s_array.o ${LD_FLAGS} -o $@
 
 ${OUTPUT_PATH}/t_list.exe: objs
-	g++ t_list.o ${LD_FLAGS} -o $@
+	gcc t_list.o ${LD_FLAGS} -o $@
 
 ${OUTPUT_PATH}/t_DataArray.exe: objs
 	g++ t_DataArray.o ${LD_FLAGS} -o $@
