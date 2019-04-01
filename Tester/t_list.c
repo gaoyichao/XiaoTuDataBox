@@ -65,7 +65,6 @@ int test_queue()
         list_del(queue.next);
     }
 
-
     for (int i = 0; i < 5; i++) {
         nodes[i].key = 1.1 + 0.1 * i;
         init_list_head(&(nodes[i].list));

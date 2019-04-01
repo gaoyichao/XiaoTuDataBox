@@ -84,6 +84,14 @@ class DataList {
             return re;
         }
 
+        DataListNode<T> * insert_prev(DataListNode<T> * node, T const & v) {
+            DataListNode<T> *re = new DataListNode<T>(v);
+            node->add_prev(re);
+            mSize++;
+            return re;
+        }
+
+
         void remove(DataListNode<T> *node) {
             node->remove();
             delete node;
@@ -100,7 +108,7 @@ class DataList {
         }
 
         DataListNode<T> * push(T const & v) {
-            return insert(mHead.next, v);
+            return insert(&mHead, v);
         }
 
         T pop() {
@@ -115,7 +123,7 @@ class DataList {
         }
 
         DataListNode<T> * push_end(T const & v) {
-            return insert(mHead.prev, v);
+            return insert_prev(&mHead, v);
         }
 
         T pop_end() {
@@ -125,6 +133,37 @@ class DataList {
         }
 
         void pop_end(T & re) {
+            re = mHead.prev->key;
+            remove(mHead.prev);
+        }
+
+        DataListNode<T> * enqueue(T const & v) {
+            return insert_prev(&mHead, v);
+        }
+
+        T dequeue() {
+            T re = mHead.next->key;
+            remove(mHead.next);
+            return re;
+        }
+
+        void dequeue(T & re) {
+            re = mHead.next->key;
+            remove(mHead.next);
+        }
+
+
+        DataListNode<T> * enqueue_head(T const & v) {
+            return insert(&mHead, v);
+        }
+
+        T dequeue_end() {
+            T re = mHead.prev->key;
+            remove(mHead.prev);
+            return re;
+        }
+
+        void dequeue_end(T & re) {
             re = mHead.prev->key;
             remove(mHead.prev);
         }

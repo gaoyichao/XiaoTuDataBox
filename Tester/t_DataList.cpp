@@ -158,5 +158,46 @@ TEST(DataList, stack)
     EXPECT_EQ(tmp, 1.4);
 }
 
+TEST(DataList, queue)
+{
+    DataList<double> queue;
+    double tmp = 0;
+    
+    queue.enqueue(1.2);
+    queue.enqueue(1.3);
+    queue.enqueue(3.14);
+    EXPECT_EQ(queue.size(), 3);
+
+    EXPECT_EQ(queue.dequeue(), 1.2);
+    queue.dequeue(tmp);
+    EXPECT_EQ(tmp, 1.3);
+    EXPECT_EQ(queue.size(), 1);
+
+    queue.enqueue_head(1.2);
+    queue.enqueue_head(1.3);
+    EXPECT_EQ(queue.size(), 3);
+    EXPECT_EQ(queue.dequeue_end(), 3.14);
+    EXPECT_EQ(queue.dequeue_end(), 1.2);
+    EXPECT_EQ(queue.dequeue_end(), 1.3);
+    EXPECT_EQ(queue.size(), 0);
+
+    queue.enqueue(1.2);
+    queue.enqueue(1.3);
+    queue.enqueue(3.14);
+    EXPECT_EQ(queue.size(), 3);
+
+    EXPECT_EQ(queue.dequeue(), 1.2);
+    EXPECT_EQ(queue.dequeue(), 1.3);
+    EXPECT_EQ(queue.size(), 1);
+
+    queue.enqueue_head(1.2);
+    queue.enqueue_head(1.3);
+    EXPECT_EQ(queue.size(), 3);
+    EXPECT_EQ(queue.dequeue(), 1.3);
+    EXPECT_EQ(queue.dequeue(), 1.2);
+    EXPECT_EQ(queue.dequeue(), 3.14);
+    EXPECT_EQ(queue.size(), 0);
+}
+
 
 
