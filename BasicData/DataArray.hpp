@@ -225,6 +225,27 @@ class DataArray {
             return remove(id, id+1);
         }
 
+        int push(T const & e) {
+            if (full()) {
+                int ncap = this->capacity() * 2;
+                if (ncap == 0) ncap = 1;
+                int err = adjust_capacity(ncap);
+                if (0 != err)
+                    return err;
+            }
+            mEnd[0] = e;
+            mEnd++;
+            return 0;
+        }
+
+        int pop(T & buf) {
+            if (empty())
+                return 1;
+            mEnd--;
+            buf = mEnd[0];
+            return 0;
+        }
+
     public:
         T const & operator [] (int idx) const {
             assert((mStorBegin + idx) < mStorEnd);

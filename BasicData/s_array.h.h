@@ -46,4 +46,8 @@ int TEMPLATE_FUNCTION(s_array, insert_section)(TEMPLATE_TYPE(s_array) *a, int i,
 int TEMPLATE_FUNCTION(s_array, remove)(TEMPLATE_TYPE(s_array) *a, int i);
 int TEMPLATE_FUNCTION(s_array, remove_section)(TEMPLATE_TYPE(s_array) *a, int from, int to);
 
+int TEMPLATE_FUNCTION(s_array, push)(TEMPLATE_TYPE(s_array) *a, T v);
+int TEMPLATE_FUNCTION(s_array, ptr_push)(TEMPLATE_TYPE(s_array) *a, T const *v);
+int TEMPLATE_FUNCTION(s_array, pop)(TEMPLATE_TYPE(s_array) *a, T *v);
+
 

@@ -164,4 +164,32 @@ TEST(DataArray, remove)
 }
 
 
+TEST(DataArray, stack)
+{
+    DataArray<double> *pArray = new DataArray<double>();
+    EXPECT_EQ(pArray->size(), 0);
+    EXPECT_EQ(pArray->capacity(), 0);
+    EXPECT_TRUE(pArray->empty());
+    EXPECT_TRUE(pArray->full());
+
+    for (int i = 0; i < 5; i++) {
+        pArray->push(1.1 + i);
+        EXPECT_EQ(pArray->size(), 1 + i);
+        EXPECT_EQ((*pArray)[i], 1.1 + i);
+    }
+    EXPECT_EQ(pArray->size(), 5);
+
+    double tmp;
+    for (int i = 5; i > 0; i--) {
+        pArray->pop(tmp);
+        EXPECT_EQ(pArray->size(), i - 1);
+        EXPECT_EQ(tmp, 0.1 + i);
+    }
+    EXPECT_EQ(pArray->size(), 0);
+    EXPECT_EQ(pArray->pop(tmp), 1);
+
+    delete pArray;
+}
+
+
 

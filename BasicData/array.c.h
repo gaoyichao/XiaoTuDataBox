@@ -375,6 +375,49 @@ int TEMPLATE_FUNCTION(array, remove)(TEMPLATE_TYPE(array) *a, int i)
 {
     return TEMPLATE_FUNCTION(array, remove_section)(a, i, i+1);
 }
+/*
+ * array_T_push - 入栈，表尾作为栈顶 
+ *
+ * @a: array对象
+ * @v: 目标值
+ */
+int TEMPLATE_FUNCTION(array, push)(TEMPLATE_TYPE(array) *a, T v)
+{
+    int size = TEMPLATE_FUNCTION(array, size)(a);
+    TEMPLATE_FUNCTION(array, resize)(a, size + 1);
+
+    a->stor_begin[size] = v;
+    return 0;
+}
+/*
+ * array_T_ptr_push - 入栈，表尾作为栈顶 
+ *
+ * @a: array对象
+ * @v: 目标值指针
+ */
+int TEMPLATE_FUNCTION(array, ptr_push)(TEMPLATE_TYPE(array) *a, T const *v)
+{
+    int size = TEMPLATE_FUNCTION(array, size)(a);
+    TEMPLATE_FUNCTION(array, resize)(a, size + 1);
+
+    a->stor_begin[size] = *v;
+    return 0;
+}
+/*
+ * array_T_ptr_push - 出栈，表尾作为栈顶 
+ *
+ * @a: array对象
+ * @v: 目标值指针
+ */
+int TEMPLATE_FUNCTION(array, pop)(TEMPLATE_TYPE(array) *a, T *v)
+{
+    if (TEMPLATE_FUNCTION(array, empty)(a))
+        return 1;
+
+    a->end--;
+    *v = a->end[0];
+    return 0;
+}
 
 
 
