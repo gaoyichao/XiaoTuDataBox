@@ -22,8 +22,8 @@ int TEMPLATE_FUNCTION(s_array, init)(TEMPLATE_TYPE(s_array) *a, int size, T *buf
 int TEMPLATE_FUNCTION(s_array, capacity)(TEMPLATE_TYPE(s_array) *a);
 int TEMPLATE_FUNCTION(s_array, size)(TEMPLATE_TYPE(s_array) *a);
 int TEMPLATE_FUNCTION(s_array, available)(TEMPLATE_TYPE(s_array) *a);
-bool TEMPLATE_FUNCTION(s_array, empty)(TEMPLATE_TYPE(s_array) *a);
-bool TEMPLATE_FUNCTION(s_array, full)(TEMPLATE_TYPE(s_array) *a);
+int TEMPLATE_FUNCTION(s_array, empty)(TEMPLATE_TYPE(s_array) *a);
+int TEMPLATE_FUNCTION(s_array, full)(TEMPLATE_TYPE(s_array) *a);
 
 void TEMPLATE_FUNCTION(s_array, clear)(TEMPLATE_TYPE(s_array) *a);
 

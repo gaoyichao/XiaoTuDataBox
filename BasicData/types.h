@@ -53,6 +53,23 @@ union Data16 {
 };
 
 /*
+ * queue_flag_bits - 队列属性
+ */
+struct queue_flag_bits {
+    uint32 overwrite : 1;    // 如果队列已满,是否覆盖队首数据
+    uint32 rsv : 31;         // 保留
+};
+
+union queue_flag {
+    struct queue_flag_bits bits;
+    uint32 all;
+};
+
+#define QUEUE_NOERR 0
+#define QUEUE_FULL 1
+#define QUEUE_EMPTY 2
+
+/*
 * offsetof - 求取一个结构体某个成员的偏移量
 *
 * @type: 结构体类型

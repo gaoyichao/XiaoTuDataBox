@@ -88,7 +88,7 @@ int TEMPLATE_FUNCTION(array, available)(TEMPLATE_TYPE(array) *a)
  *
  * @a: array对象
  */
-bool TEMPLATE_FUNCTION(array, empty)(TEMPLATE_TYPE(array) *a)
+int TEMPLATE_FUNCTION(array, empty)(TEMPLATE_TYPE(array) *a)
 {
     return a->end == a->stor_begin;
 }
@@ -98,7 +98,7 @@ bool TEMPLATE_FUNCTION(array, empty)(TEMPLATE_TYPE(array) *a)
  *
  * @a: array对象
  */
-bool TEMPLATE_FUNCTION(array, full)(TEMPLATE_TYPE(array) *a)
+int TEMPLATE_FUNCTION(array, full)(TEMPLATE_TYPE(array) *a)
 {
     return a->end == a->stor_end;
 }

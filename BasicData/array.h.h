@@ -24,8 +24,8 @@ int TEMPLATE_FUNCTION(array, init_copy)(TEMPLATE_TYPE(array) *a, int size, T con
 int TEMPLATE_FUNCTION(array, capacity)(TEMPLATE_TYPE(array) *a);
 int TEMPLATE_FUNCTION(array, size)(TEMPLATE_TYPE(array) *a);
 int TEMPLATE_FUNCTION(array, available)(TEMPLATE_TYPE(array) *a);
-bool TEMPLATE_FUNCTION(array, empty)(TEMPLATE_TYPE(array) *a);
-bool TEMPLATE_FUNCTION(array, full)(TEMPLATE_TYPE(array) *a);
+int TEMPLATE_FUNCTION(array, empty)(TEMPLATE_TYPE(array) *a);
+int TEMPLATE_FUNCTION(array, full)(TEMPLATE_TYPE(array) *a);
 
 int TEMPLATE_FUNCTION(array, adjust_capacity)(TEMPLATE_TYPE(array) *a, int c);
 int TEMPLATE_FUNCTION(array, resize)(TEMPLATE_TYPE(array) *a, int size);

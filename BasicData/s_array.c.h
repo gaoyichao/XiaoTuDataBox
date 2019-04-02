@@ -66,7 +66,7 @@ int TEMPLATE_FUNCTION(s_array, available)(TEMPLATE_TYPE(s_array) *a)
  *
  * @a: s_array对象
  */
-bool TEMPLATE_FUNCTION(s_array, empty)(TEMPLATE_TYPE(s_array) *a)
+int TEMPLATE_FUNCTION(s_array, empty)(TEMPLATE_TYPE(s_array) *a)
 {
     return a->end == a->stor_begin;
 }
@@ -76,7 +76,7 @@ bool TEMPLATE_FUNCTION(s_array, empty)(TEMPLATE_TYPE(s_array) *a)
  *
  * @a: s_array对象
  */
-bool TEMPLATE_FUNCTION(s_array, full)(TEMPLATE_TYPE(s_array) *a)
+int TEMPLATE_FUNCTION(s_array, full)(TEMPLATE_TYPE(s_array) *a)
 {
     return a->end == a->stor_end;
 }
