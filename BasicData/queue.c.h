@@ -154,6 +154,7 @@ int TEMPLATE_FUNCTION(queue, adjust_capacity)(TEMPLATE_TYPE(queue) *q, int c)
     q->stor_end = q->stor_begin + c;
     q->begin = q->stor_begin;
     q->end = q->stor_begin + size;
+    return 0;
 }
 /*
  * queue_T_rearrange - 整理queue

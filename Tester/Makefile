@@ -13,6 +13,7 @@ TARGET += ${OUTPUT_PATH}/t_list.exe
 
 TARGET += ${OUTPUT_PATH}/t_DataArray.exe
 TARGET += ${OUTPUT_PATH}/t_DataList.exe
+TARGET += ${OUTPUT_PATH}/t_DataQueue.exe
 
 all: objs ${TARGET}
 
@@ -36,6 +37,10 @@ ${OUTPUT_PATH}/t_DataArray.exe: t_DataArray.o
 
 ${OUTPUT_PATH}/t_DataList.exe: t_DataList.o
 	g++ t_DataList.o ${LD_FLAGS} -o $@
+
+${OUTPUT_PATH}/t_DataQueue.exe: t_DataQueue.o
+	g++ t_DataQueue.o ${LD_FLAGS} -o $@
+
 
 -include ../build_tools/obj.mk
 
