@@ -34,7 +34,7 @@ int TEMPLATE_FUNCTION(s_queue, init)(TEMPLATE_TYPE(s_queue) *q, T *buf, int capa
 }
 
 /*
- * s_queue_T_size - 获取s_queue的容量
+ * s_queue_T_capacity - 获取s_queue的容量
  *
  * @a: s_queue对象
  */
@@ -143,8 +143,11 @@ int TEMPLATE_FUNCTION(s_queue, dequeue)(TEMPLATE_TYPE(s_queue) *q, T *buf)
 
     if (q->begin == q->stor_end)
         q->begin = q->stor_begin;
-    if (q->begin == q->end)
+
+    if (q->begin == q->end) {
+        q->begin = q->stor_begin;
         q->end = 0;
+    }
 
     return QUEUE_NOERR;
 }

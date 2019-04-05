@@ -130,7 +130,7 @@ int TEMPLATE_FUNCTION(array, adjust_capacity)(TEMPLATE_TYPE(array) *a, int c)
 }
 
 /*
- * array_T_adjust_capacity - 调整array大小
+ * array_T_adjust_size - 调整array大小
  *
  * @a: array对象
  * @c: 容量

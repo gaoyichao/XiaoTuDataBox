@@ -57,7 +57,7 @@ union Data16 {
  */
 struct queue_flag_bits {
     uint32 overwrite : 1;    // 如果队列已满,是否覆盖队首数据
-    uint32 rsv : 31;         // 保留
+    uint32 rsv : 30;         // 保留
 };
 
 union queue_flag {
