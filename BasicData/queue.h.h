@@ -38,3 +38,5 @@ void TEMPLATE_FUNCTION(queue, rearrange)(TEMPLATE_TYPE(queue) *q);
 int TEMPLATE_FUNCTION(queue, enqueue)(TEMPLATE_TYPE(queue) *q, T data);
 int TEMPLATE_FUNCTION(queue, dequeue)(TEMPLATE_TYPE(queue) *q, T *buf);
 
+int TEMPLATE_FUNCTION(queue, peek)(TEMPLATE_TYPE(queue) *q, T *buf);
+

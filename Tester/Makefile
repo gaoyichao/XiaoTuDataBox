@@ -8,8 +8,10 @@ LD_FLAGS += ${LIB_PATH} -lBasicData -lgtest -lgtest_main -lpthread
 TARGET += ${OUTPUT_PATH}/t_array.exe
 TARGET += ${OUTPUT_PATH}/t_s_array.exe
 TARGET += ${OUTPUT_PATH}/t_queue.exe
+TARGET += ${OUTPUT_PATH}/t_deque.exe
 TARGET += ${OUTPUT_PATH}/t_s_queue.exe
 TARGET += ${OUTPUT_PATH}/t_list.exe
+TARGET += ${OUTPUT_PATH}/t_binary_tree.exe
 
 TARGET += ${OUTPUT_PATH}/t_DataArray.exe
 TARGET += ${OUTPUT_PATH}/t_DataList.exe
@@ -26,11 +28,18 @@ ${OUTPUT_PATH}/t_s_array.exe: t_s_array.o
 ${OUTPUT_PATH}/t_queue.exe: t_queue.o
 	g++ t_queue.o ${LD_FLAGS} -o $@
 
+${OUTPUT_PATH}/t_deque.exe: t_deque.o
+	g++ t_deque.o ${LD_FLAGS} -o $@
+
 ${OUTPUT_PATH}/t_s_queue.exe: t_s_queue.o
 	g++ t_s_queue.o ${LD_FLAGS} -o $@
 
 ${OUTPUT_PATH}/t_list.exe: t_list.o
 	gcc t_list.o ${LD_FLAGS} -o $@
+
+${OUTPUT_PATH}/t_binary_tree.exe: t_binary_tree.o
+	gcc t_binary_tree.o ${LD_FLAGS} -o $@
+
 
 ${OUTPUT_PATH}/t_DataArray.exe: t_DataArray.o
 	g++ t_DataArray.o ${LD_FLAGS} -o $@

@@ -240,3 +240,14 @@ int TEMPLATE_FUNCTION(queue, dequeue)(TEMPLATE_TYPE(queue) *q, T *buf)
     return QUEUE_NOERR;
 }
 
+int TEMPLATE_FUNCTION(queue, peek)(TEMPLATE_TYPE(queue) *q, T *buf)
+{
+    // 队列为空
+    if (0 == q->end)
+        return QUEUE_EMPTY;
+
+    *buf = *(q->begin);
+
+    return QUEUE_NOERR;
+}
+
