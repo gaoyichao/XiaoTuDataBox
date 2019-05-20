@@ -18,7 +18,6 @@ typedef struct TEMPLATE_TYPE(deque) {
     T *end;
     T *stor_begin;
     T *stor_end;
-    union deque_flag flags;
 } TEMPLATE_TYPE(deque);
 
 int TEMPLATE_FUNCTION(deque, init)(TEMPLATE_TYPE(deque) *q);
