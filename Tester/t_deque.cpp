@@ -177,3 +177,32 @@ TEST(deque, push_back_pop_back)
 }
 
 
+TEST(deque, push_front_pop_front)
+{
+    deque_double deque;
+
+    EXPECT_EQ(deque_double_init(&deque), 0);
+    EXPECT_EQ(deque_double_size(&deque), 0);
+    EXPECT_TRUE(deque_double_empty(&deque));
+    EXPECT_FALSE(deque_double_full(&deque));
+    EXPECT_EQ(deque_double_capacity(&deque), 4);
+    EXPECT_EQ(deque_double_available(&deque), 4);
+
+    for (int i = 0; i < 5; i++) {
+        deque_double_push_front(&deque, 1.1 + i);
+        EXPECT_EQ(deque_double_size(&deque), 1 + i);
+    }
+    EXPECT_EQ(deque_double_size(&deque), 5);
+
+    double tmp;
+    for (int i = 5; i > 0; i--) {
+        deque_double_pop_front(&deque, &tmp);
+        EXPECT_EQ(deque_double_size(&deque), i - 1);
+        EXPECT_EQ(tmp, 0.1 + i);
+    }
+    EXPECT_EQ(deque_double_size(&deque), 0);
+
+    deque_double_destroy(&deque);
+}
+
+

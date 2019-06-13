@@ -1,7 +1,6 @@
 #ifndef DATA_LIST_NODE_HPP
 #define DATA_LIST_NODE_HPP
 
-#include <iostream>
 
 template <class T> class DataList;
 
@@ -100,13 +99,14 @@ class DataListNode {
 
 
     public:
-        DataListNode & operator = (T const &data) {
-            key = data;
-        }
+        DataListNode & operator = (T const &data) { key = data; }
+        & operator T() { return key; }
+        & operator const T() const { return key; }
+
 
     public:
         T key;
-    private:
+    protected:
         DataListNode * prev;
         DataListNode * next;
 };

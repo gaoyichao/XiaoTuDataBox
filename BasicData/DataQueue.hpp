@@ -46,40 +46,6 @@ class DataQueue {
             mBegin = mStorBegin;
             mEnd = 0;
         }
-
-        void rearrange() {
-            if (mStorBegin == mBegin)
-                return;
-
-            int c = capacity();
-            int s = size();
-
-            T *tmp = new T[c];
-            T *begin = mStorBegin;
-
-            int i = 0;
-            if (mBegin < mEnd) {
-                for (i = 0; i < s; i++)
-                    tmp[i] = mBegin[i];
-            } else {
-                while (mBegin != mStorEnd) {
-                    tmp[i] = mBegin[0];
-                    mBegin++;
-                    i++;
-                }
-                while (begin != mEnd) {
-                    tmp[i] = begin[0];
-                    begin++;
-                    i++;
-                }
-            }
-
-            delete [] mStorBegin;
-            mStorBegin = tmp;
-            mStorEnd = mStorBegin + c;
-            mBegin = mStorBegin;
-            mEnd = mStorBegin + s;
-        }
         /*
          * ajust_capacity - 调整队列容量
          *
@@ -87,8 +53,10 @@ class DataQueue {
          */
         int adjust_capacity(int c) {
             int s = size();
-            if (c < s)
+            if (c < s) {
+                rearrange();
                 return 1;
+            }
 
             if (c == capacity()) {
                 rearrange();
@@ -123,12 +91,63 @@ class DataQueue {
 
             return 0;
         }
+        /*
+         * rearrange - 整理queue
+         */
+        void rearrange() {
+            if (mStorBegin == mBegin)
+                return;
 
-        bool enqueue(T const & e) {
-            if (mEnd == mBegin)
+            int c = capacity();
+            int s = size();
+
+            T *tmp = new T[c];
+            T *begin = mStorBegin;
+            int i = 0;
+
+            if (mBegin < mEnd) {
+                for (i = 0; i < s; i++)
+                    tmp[i] = mBegin[i];
+            } else {
+                while (mBegin != mStorEnd) {
+                    tmp[i] = mBegin[0];
+                    mBegin++;
+                    i++;
+                }
+                while (begin != mEnd) {
+                    tmp[i] = begin[0];
+                    begin++;
+                    i++;
+                }
+            }
+
+            delete [] mStorBegin;
+            mStorBegin = tmp;
+            mStorEnd = mStorBegin + c;
+            mBegin = mStorBegin;
+            mEnd = mStorBegin + s;
+        }
+
+        bool push_front(T const & e) {
+            if (full())
                 adjust_capacity(2 * capacity());
 
-            if (0 == mEnd)
+            if (empty())
+                mEnd = mBegin;
+
+            mBegin--;
+            if (mBegin < mStorBegin)
+                mBegin = mStorEnd - 1;
+            mBegin[0] = e;
+
+            return true;
+        }
+
+        bool push_back(T const & e) {
+            if (full())
+                adjust_capacity(2 * capacity());
+
+            if (empty())
                 mEnd = mBegin;
 
             mEnd[0] = e;
@@ -139,12 +158,11 @@ class DataQueue {
             return true;
         }
 
-        bool dequeue(T & buf) {
-            if (0 == mEnd)
+        bool pop_front(T & buf) {
+            if (empty())
                 return false;
 
             buf = mBegin[0];
-
             mBegin++;
 
             if (mBegin == mStorEnd)
@@ -156,6 +174,48 @@ class DataQueue {
 
             return true;
         }
+
+        bool pop_back(T & buf) {
+            if (empty())
+                return false;
+
+            mEnd--;
+            if (mEnd < mStorBegin)
+                mEnd = mStorEnd - 1;
+
+            buf = mEnd[0];
+
+            if (mBegin == mEnd) {
+                mBegin = mStorBegin;
+                mEnd = 0;
+            }
+
+            return true;
+        }
+
+        bool peek_front(T & buf) {
+            if (empty())
+                return false;
+
+            buf = mBegin[0];
+
+            return true;
+        }
+
+        bool peek_back(T & buf) {
+            if (empty())
+                return false;
+
+            T *tmp = mEnd - 1;
+            if (tmp < mStorBegin)
+                tmp = mStorEnd - 1;
+
+            buf = *tmp;
+            return true;
+        }
+
+        bool enqueue(T const & e) { return push_back(e); }
+        bool dequeue(T & buf) { return pop_front(buf); }
 
     private:
         T *mStorBegin;

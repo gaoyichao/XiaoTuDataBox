@@ -42,7 +42,7 @@ struct btree_node * btree_successor(struct btree_node *node);
 
 struct btree_node * btree_insert(struct btree_node *root, struct btree_node *node, btree_compare_fun compare); 
 struct btree_node * btree_find(struct btree_node *root, struct btree_node *node, btree_compare_fun compare); 
-struct btree_node * btree_remove(struct btree_node **root, struct btree_node *node);
+void btree_remove(struct btree_node **root, struct btree_node *node);
 
 
 #ifdef  __cplusplus  

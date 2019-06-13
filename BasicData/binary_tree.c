@@ -230,7 +230,7 @@ struct btree_node * btree_predecessor(struct btree_node *node) {
     return y;
 }
 /*
- * btree_predecessor - 考察节点的后继
+ * btree_successor - 考察节点的后继
  *
  * @node: 考察节点
  */
@@ -303,7 +303,7 @@ struct btree_node * btree_find(struct btree_node *root, struct btree_node *node,
  * @root: 二叉树的根节点指针的指针,node可能是一个根节点
  * @node: 待移除的节点
  */
-struct btree_node * btree_remove(struct btree_node **root, struct btree_node *node) {
+void btree_remove(struct btree_node **root, struct btree_node *node) {
     if (NULL == node->left)
         btree_replace_subtree(root, node, node->right);
     else if (NULL == node->right)

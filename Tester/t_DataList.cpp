@@ -9,6 +9,17 @@ TEST(DataListNode, init)
     node.key = 0.1;
     node = 1.2;
     EXPECT_EQ(1.2, node.key);
+
+    double value = node;
+    EXPECT_EQ(1.2, value);
+
+    double &value2 = node;
+    value2 = 3.3;
+    EXPECT_EQ(3.3, node);
+
+    DataListNode<double> const node1(3.1);
+    double const &value3 = node1;
+    EXPECT_EQ(3.1, value3);
 }
 
 TEST(DataListNode, insert_remove_swap)
