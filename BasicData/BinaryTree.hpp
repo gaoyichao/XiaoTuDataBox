@@ -3,7 +3,6 @@
 
 #include <BinaryTreeNode.hpp>
 #include <DataQueue.hpp>
-
 /*
  * BinaryTree - 二叉树
  */
@@ -38,15 +37,15 @@ class BinaryTree {
             if (NULL == u)
                 return false;
 
-            if (NULL == u->parent && NULL != mRoot)
+            if (NULL == u->p && NULL != mRoot)
                 mRoot = v;
-            else if (u == u->parent->left)
-                u->parent->left = v;
+            else if (u == u->p->l)
+                u->p->l = v;
             else
-                u->parent->right = v;
+                u->p->r = v;
 
             if (NULL != v)
-                v->parent = u->parent;
+                v->p = u->p;
 
             return true;
         }
@@ -69,10 +68,10 @@ class BinaryTree {
                     return NULL;
             }
 
-            if (NULL != re->right)
-                mPreOrderQueue.push_back(re->right);
-            if (NULL != re->left)
-                mPreOrderQueue.push_back(re->left);
+            if (NULL != re->r)
+                mPreOrderQueue.push_back(re->r);
+            if (NULL != re->l)
+                mPreOrderQueue.push_back(re->l);
 
             if (0 == mPreOrderQueue.size())
                 mPreOrderQueue.push_back(NULL);
@@ -88,9 +87,9 @@ class BinaryTree {
 
             if (0 == size) {
                 re = mRoot;
-                while (NULL != re->left) {
+                while (NULL != re->l) {
                     mInOrderQueue.push_back(re);
-                    re = re->left;
+                    re = re->l;
                 }
             } else {
                 mInOrderQueue.pop_back(re);
@@ -98,12 +97,12 @@ class BinaryTree {
                     return NULL;
             }
 
-            if (NULL != re->right) {
-                mInOrderQueue.push_back(re->right);
-                BinaryTreeNode<T> *root = re->right;
-                while (NULL != root->left) {
-                    mInOrderQueue.push_back(root->left);
-                    root = root->left;
+            if (NULL != re->r) {
+                mInOrderQueue.push_back(re->r);
+                BinaryTreeNode<T> *root = re->r;
+                while (NULL != root->l) {
+                    mInOrderQueue.push_back(root->l);
+                    root = root->l;
                 }
             }
 
@@ -132,14 +131,14 @@ class BinaryTree {
             mPostOrderQueue.peek_back(tmp);
 
             while (tmp == re) {
-                if (NULL != re->right) {
-                    mPostOrderQueue.push_back(re->right);
-                    mPostOrderQueue.push_back(re->right);
+                if (NULL != re->r) {
+                    mPostOrderQueue.push_back(re->r);
+                    mPostOrderQueue.push_back(re->r);
                 }
 
-                if (NULL != re->left) {
-                    mPostOrderQueue.push_back(re->left);
-                    mPostOrderQueue.push_back(re->left);
+                if (NULL != re->l) {
+                    mPostOrderQueue.push_back(re->l);
+                    mPostOrderQueue.push_back(re->l);
                 }
 
                 mPostOrderQueue.pop_back(re);
@@ -171,6 +170,28 @@ class BinaryTree {
 
             return mRoot->subtree_max_node();
         }
+    protected:
+        void insert(BinaryTreeNode<T> * z) {
+            BinaryTreeNode<T> *y = NULL;
+            BinaryTreeNode<T> *x = mRoot;
+
+            while (NULL != x) {
+                y = x;
+                if (z->key < x->key)
+                    x = x->l;
+                else
+                    x = x->r;
+            }
+
+            z->p = y;
+            if (NULL == y)
+                mRoot = z;
+            else if (z->key < y->key)
+                y->l = z;
+            else
+                y->r = z;
+        }
+    public:
         /*
          * insert - 二叉搜索树插入元素
          *
@@ -181,27 +202,7 @@ class BinaryTree {
                 return NULL;
 
             BinaryTreeNode<T> *re = new BinaryTreeNode<T>(data);
-            if (NULL == mRoot) {
-                mRoot = re;
-                return re;
-            }
-
-            BinaryTreeNode<T> *y = NULL;
-            BinaryTreeNode<T> *x = mRoot;
-
-            while (NULL != x) {
-                y = x;
-                if (re->key < x->key)
-                    x = x->left;
-                else
-                    x = x->right;
-            }
-
-            re->parent = y;
-            if (re->key < y->key)
-                y->left = re;
-            else
-                y->right = re;
+            insert(re);
 
             return re;
         }
@@ -215,9 +216,9 @@ class BinaryTree {
 
             while (NULL != re) {
                 if (data < re->key)
-                    re = re->left;
+                    re = re->l;
                 else if (data > re->key)
-                    re = re->right;
+                    re = re->r;
                 else
                     break;
             }
@@ -233,21 +234,21 @@ class BinaryTree {
             if (NULL == node)
                 return;
 
-            if (NULL == node->left)
-                replace_subtree(node, node->right);
-            else if (NULL == node->right)
-                replace_subtree(node, node->left);
+            if (NULL == node->l)
+                replace_subtree(node, node->r);
+            else if (NULL == node->r)
+                replace_subtree(node, node->l);
             else {
-                BinaryTreeNode<T> *n = node->right->subtree_min_node();
-                if (node != n->parent) {
-                    replace_subtree(n, n->right);
-                    n->right = node->right;
-                    n->right->parent = n;
+                BinaryTreeNode<T> *n = node->r->subtree_min_node();
+                if (node != n->p) {
+                    replace_subtree(n, n->r);
+                    n->r = node->r;
+                    n->r->p = n;
                 }
 
                 replace_subtree(node, n);
-                n->left = node->left;
-                n->left->parent = n;
+                n->l = node->l;
+                n->l->p = n;
             }
 
             if (mIsSearchTree)

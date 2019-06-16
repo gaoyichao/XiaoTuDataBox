@@ -7,8 +7,8 @@ template <class T>
 class BinaryTreeNode {
     friend class BinaryTree<T>;
     public:
-        BinaryTreeNode() : parent(NULL), left(NULL), right(NULL) { }
-        BinaryTreeNode(T const & data) : parent(NULL), left(NULL), right(NULL), key(data) { }
+        BinaryTreeNode() : p(NULL), l(NULL), r(NULL) { }
+        BinaryTreeNode(T const & data) : p(NULL), l(NULL), r(NULL), key(data) { }
 
     private:
         /*
@@ -18,17 +18,10 @@ class BinaryTreeNode {
         BinaryTreeNode & operator = (BinaryTreeNode const &node) {}
 
     public:
-        BinaryTreeNode & parent_node() { return *parent; }
-        BinaryTreeNode * parent_ptr() { return parent; }
-        BinaryTreeNode & left_node() { return *left; }
-        BinaryTreeNode * left_ptr() { return left; }
-        BinaryTreeNode & right_node() { return *right; }
-        BinaryTreeNode * right_ptr() { return right; }
-
-        bool is_root() const { return NULL == parent; }
-        bool is_leaf() const { return (NULL == left && NULL == right); }
-        bool has_left() const { return NULL == left; }
-        bool has_right() const { return NULL == right; }
+        bool is_root() const { return NULL == p; }
+        bool is_leaf() const { return (NULL == l && NULL == r); }
+        bool has_left() const { return NULL == l; }
+        bool has_right() const { return NULL == r; }
     public:
         /*
          * update_left - 更新左子树
@@ -36,11 +29,11 @@ class BinaryTreeNode {
          * return: 原左子树根节点,保持其父节点,由使用者负责
          */
         BinaryTreeNode * update_left(BinaryTreeNode *node) {
-            BinaryTreeNode * re = left;
+            BinaryTreeNode * re = l;
 
-            left = node;
+            l = node;
             if (NULL != node)
-                node->parent = this;
+                node->p = this;
 
             return re;
         }
@@ -50,11 +43,11 @@ class BinaryTreeNode {
          * return: 原右子树根节点,保持其父节点,由使用者负责
          */
         BinaryTreeNode * update_right(BinaryTreeNode *node) {
-            BinaryTreeNode * re = right;
+            BinaryTreeNode * re = r;
 
-            right = node;
+            r = node;
             if (NULL != node)
-                node->parent = this;
+                node->p = this;
 
             return re;
         }
@@ -69,8 +62,8 @@ class BinaryTreeNode {
         BinaryTreeNode * subtree_min_node() {
             BinaryTreeNode *root = this;
 
-            while (NULL != root->left)
-                root = root->left;
+            while (NULL != root->l)
+                root = root->l;
 
             return root;
         }
@@ -80,8 +73,8 @@ class BinaryTreeNode {
         BinaryTreeNode * subtree_max_node() {
             BinaryTreeNode *root = this;
 
-            while (NULL != root->right)
-                root = root->right;
+            while (NULL != root->r)
+                root = root->r;
 
             return root;
         }
@@ -89,14 +82,14 @@ class BinaryTreeNode {
          * predecessor - 获取当前节点的前驱
          */
         BinaryTreeNode * predecessor() {
-            if (NULL != left)
-                return left->subtree_max_node();
+            if (NULL != l)
+                return l->subtree_max_node();
 
-            BinaryTreeNode *re = parent;
+            BinaryTreeNode *re = p;
             BinaryTreeNode *node = this;
-            while ((NULL != re) && (node == re->left)) {
+            while ((NULL != re) && (node == re->l)) {
                 node = re;
-                re = re->parent;
+                re = re->p;
             }
             return re;
         }
@@ -104,14 +97,14 @@ class BinaryTreeNode {
          * successor - 获取当前节点的后继
          */
         BinaryTreeNode * successor() {
-            if (NULL != right)
-                return right->subtree_min_node();
+            if (NULL != r)
+                return r->subtree_min_node();
 
-            BinaryTreeNode *re = parent;
+            BinaryTreeNode *re = p;
             BinaryTreeNode *node = this;
-            while ((NULL != re) && (node == re->right)) {
+            while ((NULL != re) && (node == re->r)) {
                 node = re;
-                re = re->parent;
+                re = re->p;
             }
             return re;
         }
@@ -121,12 +114,34 @@ class BinaryTreeNode {
         & operator T() { return key; }
         & operator const T() const { return key; }
 
+        BinaryTreeNode * parent() {
+            if (NULL == this)
+                return NULL;
+            return this->p;
+        }
+
+        BinaryTreeNode * left() {
+            if (NULL == this)
+                return NULL;
+            return l;
+        }
+
+        BinaryTreeNode * right() {
+            if (NULL == this)
+                return NULL;
+            return r;
+        }
+
+        BinaryTreeNode * gparent() {
+            BinaryTreeNode *_p = parent();
+            return _p->parent();
+        }
+
     public:
         T key;
-    protected:
-        BinaryTreeNode *parent;
-        BinaryTreeNode *left;
-        BinaryTreeNode *right;
+        BinaryTreeNode *p;
+        BinaryTreeNode *l;
+        BinaryTreeNode *r;
 };
 
 #endif
