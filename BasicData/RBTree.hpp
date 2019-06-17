@@ -201,7 +201,7 @@ class RBTree : public BinaryTree<T> {
                     w = p->right();
                     if (RBNodeColor::RED == w->get_color()) {
                         /*
-                         * case1: p           W
+                         * case1: P           W
                          *       / \         / \
                          *      X   w  -->  p   D
                          *         / \     / \
@@ -257,7 +257,7 @@ class RBTree : public BinaryTree<T> {
                     w = p->left();
                     if (RBNodeColor::RED == w->get_color()) {
                         /*
-                         * case1: p           W
+                         * case1: P           W
                          *       / \         / \
                          *      w   X  -->  C   p
                          *     / \             / \
