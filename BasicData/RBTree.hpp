@@ -348,9 +348,11 @@ class RBTree : public BinaryTree<T> {
                 n = (RBTreeNode<T>*)node->r->subtree_min_node();
                 nc = n->color;
                 x = n->right();
-                xp = n;
-                if (node != n->p) {
+                if (node == n->p)
+                    xp = n;
+                else {
                     this->replace_subtree(n, n->r);
+                    xp = n->parent();
                     n->r = node->r;
                     n->r->p = n;
                 }
