@@ -99,7 +99,10 @@ class DataListNode {
 
 
     public:
-        DataListNode & operator = (T const &data) { key = data; }
+        DataListNode & operator = (T const &data) {
+            key = data;
+            return *this;
+        }
         & operator T() { return key; }
         & operator const T() const { return key; }
 

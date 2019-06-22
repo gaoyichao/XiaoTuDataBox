@@ -110,7 +110,10 @@ class BinaryTreeNode {
         }
 
     public:
-        BinaryTreeNode & operator = (T const &data) { key = data; }
+        BinaryTreeNode & operator = (T const &data) {
+            key = data;
+            return *this;
+        }
         & operator T() { return key; }
         & operator const T() const { return key; }
 

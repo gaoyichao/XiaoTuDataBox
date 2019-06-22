@@ -25,7 +25,10 @@ class RBTreeNode : public BinaryTreeNode<T> {
         RBTreeNode & operator = (RBTreeNode const &node) {}
 
     public:
-        RBTreeNode & operator = (T const &data) { this->key = data; }
+        RBTreeNode & operator = (T const &data) {
+            this->key = data;
+            return *this;
+        }
         & operator T() { return this->key; }
         & operator const T() const { return this->key; }
 
