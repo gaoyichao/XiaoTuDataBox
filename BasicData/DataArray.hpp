@@ -205,7 +205,7 @@ class DataArray {
             if (to < from)
                 return 1;
         
-            int n = size();
+            int n = size() + 1;
             if (to >= n)
                 return 2;
 

@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <DataArray.hpp>
+#include <iostream>
 
 TEST(DataArray, init)
 {
@@ -139,6 +140,7 @@ TEST(DataArray, remove)
     double pi = 3.1415926;
     array.insert(2, pi);
     EXPECT_EQ(array.size(), 5);
+    EXPECT_EQ(array[2], pi);
 
     array.remove(2);
     EXPECT_EQ(array.size(), 4);
@@ -161,6 +163,10 @@ TEST(DataArray, remove)
     EXPECT_EQ(array.size(), 8);
     EXPECT_EQ(array.remove(6, 2), 1);
     EXPECT_EQ(array.remove(8), 2);
+
+    array.remove(1, 8);
+    array.remove(0);
+    EXPECT_EQ(array.size(), 0);
 }
 
 

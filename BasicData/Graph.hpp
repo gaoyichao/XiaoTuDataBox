@@ -46,6 +46,41 @@ class Graph {
             return edge;
         }
 
+        bool remove_edge(GEdge<NodeType, EdgeType> *edge) {
+            int idx = edges.find_idx(edge);
+            if (-1 == idx)
+                return false;
+
+            edge->from->remove_outedge(edge);
+            edge->to->remove_inedge(edge);
+            edges.remove(idx);
+
+            delete edge;
+            return true;
+        }
+
+        bool remove_node(GNode<NodeType, EdgeType> *node) {
+            int idx = nodes.find_idx(node);
+            if (-1 == idx)
+                return false;
+
+            nodes.remove(idx);
+            int num_out = node->degree_out();
+            for (int i = 0; i < num_out; i++) {
+                GEdge<NodeType, EdgeType> *edge = node->outEdges[i];
+                remove_edge(edge);
+            }
+
+            int num_in = node->degree_in();
+            for (int i = 0; i < num_in; i++) {
+                GEdge<NodeType, EdgeType> *edge = node->inEdges[i];
+                remove_edge(edge);
+            }
+
+            delete node;
+            return true;
+        }
+
     public:
         int num_nodes() const { return nodes.size(); }
         int num_edges() const { return edges.size(); }

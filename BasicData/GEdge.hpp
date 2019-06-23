@@ -7,6 +7,7 @@ template <class NodeType, class EdgeType> class Graph;
 template <class NodeType, class EdgeType>
 class GEdge {
     friend class GNode<NodeType, EdgeType>;
+    friend class Graph<NodeType, EdgeType>;
 
     public:
         GEdge()

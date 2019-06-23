@@ -74,6 +74,23 @@ TEST(Graph, init)
     EXPECT_EQ(1, graph->nodes[1]->degree_in());
     EXPECT_EQ(1, graph->edges[0]->key);
 
+    graph->remove_edge(graph->edges[0]);
+    EXPECT_EQ(0, graph->num_edges());
+    EXPECT_EQ(0, graph->nodes[0]->degree_out());
+    EXPECT_EQ(0, graph->nodes[1]->degree_in());
+ 
+    graph->add_edge(graph->nodes[2], graph->nodes[1], 1);
+    EXPECT_EQ(1, graph->num_edges());
+    EXPECT_EQ(1, graph->nodes[2]->degree_out());
+    EXPECT_EQ(1, graph->nodes[1]->degree_in());
+    EXPECT_EQ(1, graph->edges[0]->key);
+
+    graph->remove_node(graph->nodes[2]);
+    EXPECT_EQ(no - 1, graph->num_nodes());
+    EXPECT_EQ(0, graph->num_edges());
+    EXPECT_EQ(0, graph->nodes[1]->degree_in());
+
+
     delete graph;
 }
 
