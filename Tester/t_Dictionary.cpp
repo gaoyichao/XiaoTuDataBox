@@ -50,8 +50,8 @@ TEST(DictionaryNode, add_remove)
 
 TEST(DictionaryNode, trace_back)
 {
-    DictionaryNode<char, double> node('d');
-    DictionaryNode<char, double> *p;
+    DictionaryNode<int, double> node('d');
+    DictionaryNode<int, double> *p;
     
     p = node.add_child('o');
     p = p->add_child('u');
@@ -63,7 +63,7 @@ TEST(DictionaryNode, trace_back)
     EXPECT_EQ('n', *p);
     EXPECT_EQ(7, p->depth);
 
-    char douniwan[9];
+    int douniwan[9];
     std::string oracle("douniwan");
     EXPECT_EQ(7, p->trace_back(douniwan, 7));
     for (int i = 0; i < 8; i++)
@@ -71,37 +71,44 @@ TEST(DictionaryNode, trace_back)
 
 }
 
-TEST(Dictionary, insert_find_remove)
+TEST(Dictionary_char, insert_find_remove)
 {
     Dictionary<char, double> dic; 
     DictionaryNode<char, double> *p, *p1;
 
     std::string oracle("douniwan");
-    p = dic.insert(oracle.c_str(), 8);
-    EXPECT_EQ('n', *p);
-    EXPECT_EQ(7, p->depth);
+    p = dic.insert(oracle);
+    EXPECT_EQ('\0', *p);
+    EXPECT_EQ(8, p->depth);
 
     char douniwan[9];
-    EXPECT_EQ(7, p->trace_back(douniwan, 8));
-    for (int i = 0; i < 8; i++)
+    EXPECT_EQ(8, p->trace_back(douniwan, 8));
+    for (int i = 0; i < 9; i++)
         EXPECT_EQ(oracle[i], douniwan[i]);
 
     std::string oracle1("bienao");
-    p1 = dic.insert(oracle1.c_str(), 6);
-    EXPECT_EQ('o', *p1);
-    EXPECT_EQ(5, p1->depth);
-    EXPECT_EQ(5, p1->trace_back(douniwan, 8));
-    for (int i = 0; i < 6; i++)
+    p1 = dic.insert(oracle1);
+    EXPECT_EQ('\0', *p1);
+    EXPECT_EQ(6, p1->depth);
+    EXPECT_EQ(6, p1->trace_back(douniwan, 8));
+    for (int i = 0; i < 7; i++)
         EXPECT_EQ(oracle1[i], douniwan[i]);
 
     std::string oracle2("hehe");
-    EXPECT_EQ(p, dic.find(oracle.c_str(), 8));
-    EXPECT_EQ(p1, dic.find(oracle1.c_str(), 6));
-    EXPECT_EQ(NULL, dic.find(oracle2.c_str(), 4));
+    EXPECT_EQ(p, dic.find(oracle));
+    EXPECT_EQ(p1, dic.find(oracle1));
+    EXPECT_EQ(NULL, dic.find(oracle2));
 
-    dic.remove(oracle.c_str(), 8);
-    EXPECT_EQ(NULL, dic.find(oracle.c_str(), 8));
-    EXPECT_FALSE(dic.remove(oracle1.c_str(), 2));
+    dic.remove(oracle);
+    EXPECT_EQ(NULL, dic.find(oracle));
+
+    std::string oracle3("逗你玩");
+    char tmp[50];
+    p = dic.insert(oracle3);
+    p->trace_back(tmp, 50);
+    std::cout << tmp << std::endl;
 }
+
+
 
 

@@ -16,8 +16,8 @@ class DictionaryNode {
         DictionaryNode & operator = (DictionaryNode const &node) { key = node.key; }
 
     public:
-        DictionaryNode<KeyType, ValueType> * add_child(KeyType const & data) {
-            RBTreeNode<DictionaryNode<KeyType, ValueType>> *rbnode = children.find(data);
+        DictionaryNode  * add_child(KeyType const & data) {
+            RBTreeNode<DictionaryNode> *rbnode = children.find(data);
 
             if (NULL == rbnode) {
                 rbnode = children.insert(DictionaryNode(data));
@@ -28,8 +28,8 @@ class DictionaryNode {
             return &(rbnode->key);
         }
 
-        DictionaryNode<KeyType, ValueType> * find_child(KeyType const & data) {
-            RBTreeNode<DictionaryNode<KeyType, ValueType>> *rbnode = children.find(data);
+        DictionaryNode * find_child(KeyType const & data) {
+            RBTreeNode<DictionaryNode> *rbnode = children.find(data);
 
             if (NULL == rbnode)
                 return NULL;
@@ -38,7 +38,7 @@ class DictionaryNode {
         }
 
         bool remove_child(KeyType const & data) {
-            RBTreeNode<DictionaryNode<KeyType, ValueType>> *rbnode = children.find(data);
+            RBTreeNode<DictionaryNode> *rbnode = children.find(data);
 
             if (NULL == rbnode || !rbnode->key.children.empty())
                 return false;
@@ -77,7 +77,7 @@ class DictionaryNode {
         ValueType value;
         int depth;
         DictionaryNode *p;
-    private:
+    protected:
         RBTree<DictionaryNode> children; 
 };
 
