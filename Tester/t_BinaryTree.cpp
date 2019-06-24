@@ -107,6 +107,11 @@ TEST(BinaryTree, init)
     }
 
     delete [] nodes;
+
+
+    BinaryTree<double> tree2;
+    BinaryTreeNode<double> *ptrnode = tree2.postorder_traversal();
+    EXPECT_EQ(NULL, ptrnode);
 }
 
 TEST(BinaryTree, traversal)
@@ -285,16 +290,27 @@ TEST(BinaryTree, replace_subtree)
 
 TEST(BinaryTree, insert)
 {
-    BinaryTree<double> tree;
+    BinaryTree<double> *tree;
     BinaryTreeNode<double> * node;
+
+    tree = new BinaryTree<double>;
+    tree->insert(2.0);
+    node = tree->minimum();
+    EXPECT_EQ(2.0, *node);
+    tree->remove(2.0);
+    EXPECT_TRUE(tree->empty());
+    tree->insert(2.0);
+    delete tree;
+
+    tree = new BinaryTree<double>;
     int i;
     double oracle[5];
 
-    tree.insert(2.0);
-    tree.insert(4.0);
-    tree.insert(0.0);
-    tree.insert(1.0);
-    tree.insert(3.0);
+    tree->insert(2.0);
+    tree->insert(4.0);
+    tree->insert(0.0);
+    tree->insert(1.0);
+    tree->insert(3.0);
 
     i = 0;
     oracle[0] = 0.0;
@@ -302,7 +318,7 @@ TEST(BinaryTree, insert)
     oracle[2] = 2.0;
     oracle[3] = 3.0;
     oracle[4] = 4.0;
-    for (node = tree.inorder_traversal(); NULL != node; node = tree.inorder_traversal()) {
+    for (node = tree->inorder_traversal(); NULL != node; node = tree->inorder_traversal()) {
         EXPECT_EQ(oracle[i], *node);
         i++;
     }
@@ -313,16 +329,18 @@ TEST(BinaryTree, insert)
     oracle[2] = 3.0;
     oracle[3] = 4.0;
     oracle[4] = 2.0;
-    for (node = tree.postorder_traversal(); NULL != node; node = tree.postorder_traversal()) {
+    for (node = tree->postorder_traversal(); NULL != node; node = tree->postorder_traversal()) {
         EXPECT_EQ(oracle[i], *node);
         i++;
     }
 
-    node = tree.minimum();
+    node = tree->minimum();
     EXPECT_EQ(0.0, *node);
 
-    node = tree.maximum();
+    node = tree->maximum();
     EXPECT_EQ(4.0, *node);
+
+    delete tree;
 }
 
 TEST(BinaryTree, min_max)

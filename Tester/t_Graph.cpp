@@ -90,7 +90,6 @@ TEST(Graph, init)
     EXPECT_EQ(0, graph->num_edges());
     EXPECT_EQ(0, graph->nodes[1]->degree_in());
 
-
     delete graph;
 }
 

@@ -20,6 +20,7 @@ TARGET += ${OUTPUT_PATH}/t_DataList.exe
 TARGET += ${OUTPUT_PATH}/t_DataQueue.exe
 TARGET += ${OUTPUT_PATH}/t_BinaryTree.exe
 TARGET += ${OUTPUT_PATH}/t_RBTree.exe
+TARGET += ${OUTPUT_PATH}/t_Dictionary.exe
 TARGET += ${OUTPUT_PATH}/t_Graph.exe
 
 all: objs ${TARGET}
@@ -60,6 +61,9 @@ ${OUTPUT_PATH}/t_BinaryTree.exe: t_BinaryTree.o ${LIB_FILES}
 
 ${OUTPUT_PATH}/t_RBTree.exe: t_RBTree.o ${LIB_FILES}
 	g++ t_RBTree.o ${LD_FLAGS} -o $@
+
+${OUTPUT_PATH}/t_Dictionary.exe: t_Dictionary.o ${LIB_FILES}
+	g++ t_Dictionary.o ${LD_FLAGS} -o $@
 
 ${OUTPUT_PATH}/t_Graph.exe: t_Graph.o ${LIB_FILES}
 	g++ t_Graph.o ${LD_FLAGS} -o $@

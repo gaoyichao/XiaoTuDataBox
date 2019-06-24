@@ -3,6 +3,7 @@
 
 #include <BinaryTreeNode.hpp>
 #include <DataQueue.hpp>
+#include <iostream>
 /*
  * BinaryTree - 二叉树
  */
@@ -16,7 +17,7 @@ class BinaryTree {
         ~BinaryTree() {
             if (!mIsSearchTree)
                 return;
-            BinaryTreeNode<double> * node;
+            BinaryTreeNode<T> * node;
             if (NULL != mRoot) {
                 for (node = postorder_traversal(); NULL != node; node = postorder_traversal()) {
                     delete node;
@@ -126,9 +127,10 @@ class BinaryTree {
             mPostOrderQueue.pop_back(re);
             if (NULL == re)
                 return NULL;
-            if (0 == mPostOrderQueue.size())
+
+            if (!mPostOrderQueue.peek_back(tmp))
                 mPostOrderQueue.push_back(NULL);
-            mPostOrderQueue.peek_back(tmp);
+
 
             while (tmp == re) {
                 if (NULL != re->r) {
@@ -142,7 +144,10 @@ class BinaryTree {
                 }
 
                 mPostOrderQueue.pop_back(re);
-                mPostOrderQueue.peek_back(tmp);
+                if (!mPostOrderQueue.peek_back(tmp)) {
+                    mPostOrderQueue.push_back(NULL);
+                    break;
+                }
             }
 
             return re;

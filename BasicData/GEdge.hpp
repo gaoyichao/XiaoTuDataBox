@@ -20,12 +20,12 @@ class GEdge {
             : from(f), to(t), key(data) { }
 
     public:
-        GEdge & operator = (NodeType const &data) {
+        GEdge & operator = (EdgeType const &data) {
             key = data;
             return *this;
         }
-        & operator NodeType() { return key; }
-        & operator const NodeType() const { return key; }
+        & operator EdgeType() { return key; }
+        & operator const EdgeType() const { return key; }
 
 
     public:

@@ -18,8 +18,8 @@ template <class T>
 class RBTree : public BinaryTree<T> {
     private:
     public:
-        RBTree() : BinaryTree<T>() {}
-        RBTree(RBTreeNode<T> *root) : BinaryTree<T>(root) { }
+        RBTree() : BinaryTree<T>(), mNum(0) {}
+        RBTree(RBTreeNode<T> *root) : BinaryTree<T>(root), mNum(0) { }
     public:
         RBTreeNode<T> * root() { return (RBTreeNode<T>*)this->mRoot; }
     private:
@@ -322,6 +322,7 @@ class RBTree : public BinaryTree<T> {
 
             insert_fixup(re);
 
+            mNum++;
             return re;
         }
 
@@ -365,9 +366,14 @@ class RBTree : public BinaryTree<T> {
             if (RBNodeColor::BLK == nc)
                 remove_fixup(x, xp);
             delete node;
+            mNum--;
         }
 
         void remove(T const & data) { remove(find(data)); }
+
+        int size() const { return mNum; }
+    private:
+        int mNum;
 };
 
 #endif

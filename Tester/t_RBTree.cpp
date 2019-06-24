@@ -38,16 +38,26 @@ TEST(RBTreeNode, init)
 
 TEST(RBTree, insert)
 {
-    RBTree<double> tree;
+    RBTree<double> *tree;
     BinaryTreeNode<double> * node;
     int i;
     double oracle[5];
 
-    tree.insert(2);
-    tree.insert(4);
-    tree.insert(0);
-    tree.insert(1);
-    tree.insert(3);
+    tree = new RBTree<double>;
+    tree->insert(2.0);
+    node = tree->minimum();
+    EXPECT_EQ(2.0, *node);
+    tree->remove(2.0);
+    EXPECT_TRUE(tree->empty());
+    tree->insert(2.0);
+    delete tree;
+
+    tree = new RBTree<double>;
+    tree->insert(2);
+    tree->insert(4);
+    tree->insert(0);
+    tree->insert(1);
+    tree->insert(3);
 
     i = 0;
     oracle[0] = 0.0;
@@ -55,7 +65,7 @@ TEST(RBTree, insert)
     oracle[2] = 2.0;
     oracle[3] = 3.0;
     oracle[4] = 4.0;
-    for (node = tree.inorder_traversal(); NULL != node; node = tree.inorder_traversal()) {
+    for (node = tree->inorder_traversal(); NULL != node; node = tree->inorder_traversal()) {
         EXPECT_EQ(oracle[i], *node);
         i++;
     }
@@ -66,34 +76,35 @@ TEST(RBTree, insert)
     oracle[2] = 3.0;
     oracle[3] = 4.0;
     oracle[4] = 2.0;
-    for (node = tree.postorder_traversal(); NULL != node; node = tree.postorder_traversal()) {
+    for (node = tree->postorder_traversal(); NULL != node; node = tree->postorder_traversal()) {
         EXPECT_EQ(oracle[i], *node);
         i++;
     }
 
-    node = tree.minimum();
+    node = tree->minimum();
     EXPECT_EQ(0.0, *node);
 
-    node = tree.maximum();
+    node = tree->maximum();
     EXPECT_EQ(4.0, *node);
 
     for (i = 5; i < 10 ; i++)
-        tree.insert(1.0 * i);
+        tree->insert(1.0 * i);
 
-    node = tree.minimum();
+    node = tree->minimum();
     EXPECT_EQ(0.0, *node);
 
     i = 0;
-    for (node = tree.minimum(); NULL != node; node = node->successor()) {
+    for (node = tree->minimum(); NULL != node; node = node->successor()) {
         EXPECT_EQ(i, *node);
         i++;
     }
 
     i = 10;
-    for (node = tree.maximum(); NULL != node; node = node->predecessor()) {
+    for (node = tree->maximum(); NULL != node; node = node->predecessor()) {
         i--;
         EXPECT_EQ(i, *node);
     }
+    delete tree;
 }
 
 
