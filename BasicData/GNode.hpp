@@ -39,6 +39,7 @@ class GNode {
             if (NULL == edge || NULL == edge->to || this != edge->from)
                 return false;
             outEdges.push(edge);
+            return true;
         }
 
         bool remove_outedge(GEdge<NodeType, EdgeType> * edge) {
