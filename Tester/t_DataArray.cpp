@@ -34,6 +34,12 @@ TEST(DataArray, init)
     array[5] = 101.1;
     EXPECT_NE((*pArray)[5], array[5]);
     delete pArray;
+
+    // 类似Eigen的初始化
+    pArray = new DataArray<double>();
+    *pArray << 0.0, 1.0, 2.0, 3.0, 4.0, 5.0;
+    EXPECT_EQ(pArray->size(), 6);
+    delete pArray;
 }
 
 TEST(DataArray, resize)

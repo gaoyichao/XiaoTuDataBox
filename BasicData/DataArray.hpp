@@ -290,6 +290,16 @@ class DataArray {
             return stream;
         }
 
+        DataArray & operator << (T const & e) {
+            push(e);
+            return *this;
+        }
+
+        DataArray & operator , (T const & e) {
+            push(e);
+            return *this;
+        }
+
 
     private:
         T *mStorBegin;
