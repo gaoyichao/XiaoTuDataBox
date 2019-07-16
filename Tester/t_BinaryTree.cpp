@@ -67,7 +67,7 @@ TEST(BinaryTree, init)
     nodes[0].update_left(&nodes[1]);
     nodes[0].update_right(&nodes[2]);
    
-    BinaryTree<double> tree(&nodes[0]);
+    BinaryTree<double, false> tree(&nodes[0]);
     EXPECT_FALSE(tree.empty());
 
     // 先序遍历
@@ -109,7 +109,7 @@ TEST(BinaryTree, init)
     delete [] nodes;
 
 
-    BinaryTree<double> tree2;
+    BinaryTree<double, false> tree2;
     BinaryTreeNode<double> *ptrnode = tree2.postorder_traversal();
     EXPECT_EQ(NULL, ptrnode);
 }
@@ -138,7 +138,7 @@ TEST(BinaryTree, traversal)
    
     nodes[2].update_left(&nodes1[0]);
 
-    BinaryTree<double> tree(&nodes[0]);
+    BinaryTree<double, false> tree(&nodes[0]);
 
     // 先序遍历
     i = 0;
@@ -228,7 +228,7 @@ TEST(BinaryTree, replace_subtree)
 
     nodes[2].update_left(&nodes1[0]);
 
-    BinaryTree<double> tree(&nodes[0]);
+    BinaryTree<double, false> tree(&nodes[0]);
     tree.replace_subtree(&nodes1[0], &nodes2[0]);
 
     // 先序遍历
@@ -441,9 +441,36 @@ TEST(BinaryTree, remove)
     }
 }
 
+/*******************************************************************************************
+ *
+ *
+ ******************************************************************************************/
 
+TEST(BinaryPtrTree, insert)
+{
+    BinaryTree<double*> *tree;
+    BinaryTreeNode<double*> *node;
+    BinaryTreeNode<double*> *node1;
 
+    double values[10];
+    for (int i = 0; i < 10; i++)
+        values[i] = 3.14 * i;
 
+    tree = new BinaryTree<double*>;
+    EXPECT_TRUE(tree->is_search_tree());
+    tree->insert(&values[2]);
+    node = tree->minimum();
+    EXPECT_EQ(2 * 3.14, *(*node));
+
+    node1 = tree->find(values[2]);
+    EXPECT_EQ(node1, node);
+
+    tree->remove(2 * 3.14);
+    EXPECT_TRUE(tree->empty());
+    tree->insert(&values[2]);
+    delete tree;
+
+}
 
 
 

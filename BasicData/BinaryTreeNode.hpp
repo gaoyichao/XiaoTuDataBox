@@ -1,11 +1,11 @@
 #ifndef BINARYTREENODE_HPP
 #define BINARYTREENODE_HPP
 
-template <class T> class BinaryTree;
+template <class T> class BinaryTreeBase;
 
 template <class T>
 class BinaryTreeNode {
-    friend class BinaryTree<T>;
+    friend class BinaryTreeBase<T>;
     public:
         BinaryTreeNode() : p(NULL), l(NULL), r(NULL) { }
         BinaryTreeNode(T const & data) : p(NULL), l(NULL), r(NULL), key(data) { }
