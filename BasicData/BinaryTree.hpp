@@ -150,7 +150,7 @@ class BinaryTree<T*, isSearchTree> : public BinaryTreeBase<T*> {
 
             while (NULL != x) {
                 y = x;
-                if (*(z->key) < *(x->key))
+                if ((*(z->key)) < (*(x->key)))
                     x = x->l;
                 else
                     x = x->r;
@@ -159,7 +159,7 @@ class BinaryTree<T*, isSearchTree> : public BinaryTreeBase<T*> {
             z->p = y;
             if (NULL == y)
                 this->mRoot = z;
-            else if (*(z->key) < *(y->key))
+            else if ((*(z->key)) < (*(y->key)))
                 y->l = z;
             else
                 y->r = z;

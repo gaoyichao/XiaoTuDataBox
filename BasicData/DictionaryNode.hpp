@@ -2,6 +2,7 @@
 #define DICTIONARYNODE_HPP
 
 #include <RBTree.hpp>
+#include <iostream>
 
 template <class KeyType, class ValueType> class Dictionary;
 
@@ -12,35 +13,42 @@ class DictionaryNode {
         DictionaryNode() : depth(0), p(NULL) {}
         DictionaryNode(KeyType const & data) : depth(0), p(NULL), key(data) {}
         DictionaryNode(DictionaryNode const &node) : depth(0), p(NULL), key(node.key) {}
+        ~DictionaryNode() {
+            BinaryTreeNode<DictionaryNode*> * node;
+            for (node = children.inorder_traversal(); NULL != node; node = children.inorder_traversal()) {
+                delete node->key;
+            }
+        }
     private:
         DictionaryNode & operator = (DictionaryNode const &node) { key = node.key; }
 
     public:
-        DictionaryNode  * add_child(KeyType const & data) {
-            RBTreeNode<DictionaryNode> *rbnode = children.find(data);
+        DictionaryNode * add_child(KeyType const & data) {
+            RBTreeNode<DictionaryNode*> *rbnode = children.find(data);
 
             if (NULL == rbnode) {
-                rbnode = children.insert(DictionaryNode(data));
-                rbnode->key.depth = depth+1;
-                rbnode->key.p = this;
+                DictionaryNode *node = new DictionaryNode(data);
+                rbnode = children.insert(node);
+                rbnode->key->depth = depth+1;
+                rbnode->key->p = this;
             }
 
-            return &(rbnode->key);
+            return rbnode->key;
         }
 
         DictionaryNode * find_child(KeyType const & data) {
-            RBTreeNode<DictionaryNode> *rbnode = children.find(data);
+            RBTreeNode<DictionaryNode*> *rbnode = children.find(data);
 
             if (NULL == rbnode)
                 return NULL;
 
-            return &(rbnode->key);
+            return rbnode->key;
         }
 
         bool remove_child(KeyType const & data) {
-            RBTreeNode<DictionaryNode> *rbnode = children.find(data);
+            RBTreeNode<DictionaryNode*> *rbnode = children.find(data);
 
-            if (NULL == rbnode || !rbnode->key.children.empty())
+            if (NULL == rbnode || !rbnode->key->children.empty())
                 return false;
 
             children.remove(rbnode);
@@ -78,7 +86,7 @@ class DictionaryNode {
         int depth;
         DictionaryNode *p;
     protected:
-        RBTree<DictionaryNode> children; 
+        RBTree<DictionaryNode*> children; 
 };
 
 

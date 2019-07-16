@@ -470,6 +470,58 @@ TEST(BinaryPtrTree, insert)
     tree->insert(&values[2]);
     delete tree;
 
+    tree = new BinaryTree<double*>;
+    double oracle[5];
+    oracle[0] = 0.0;
+    oracle[1] = 1.0;
+    oracle[2] = 2.0;
+    oracle[3] = 3.0;
+    oracle[4] = 4.0;
+
+    tree->insert(&oracle[2]);
+    tree->insert(&oracle[4]);
+    tree->insert(&oracle[0]);
+    tree->insert(&oracle[1]);
+    tree->insert(&oracle[3]);
+
+    int i = 0;
+    for (node = tree->inorder_traversal(); NULL != node; node = tree->inorder_traversal()) {
+        EXPECT_EQ(oracle[i], *(*node));
+        i++;
+    }
+
+    i = 0;
+    double oracle1[5];
+    oracle1[0] = 2.0;
+    oracle1[1] = 0.0;
+    oracle1[2] = 1.0;
+    oracle1[3] = 4.0;
+    oracle1[4] = 3.0;
+    for (node = tree->preorder_traversal(); NULL != node; node = tree->preorder_traversal()) {
+        EXPECT_EQ(oracle1[i], *(*node));
+        i++;
+    }
+
+    i = 0;
+    oracle1[5];
+    oracle1[0] = 1.0;
+    oracle1[1] = 0.0;
+    oracle1[2] = 3.0;
+    oracle1[3] = 4.0;
+    oracle1[4] = 2.0;
+    for (node = tree->postorder_traversal(); NULL != node; node = tree->postorder_traversal()) {
+        EXPECT_EQ(oracle1[i], *(*node));
+        i++;
+    }
+
+
+    node = tree->minimum();
+    EXPECT_EQ(0.0, *(*node));
+
+    node = tree->maximum();
+    EXPECT_EQ(4.0, *(*node));
+
+    delete tree;
 }
 
 

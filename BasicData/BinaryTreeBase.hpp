@@ -17,6 +17,9 @@ class BinaryTreeBase {
          * preorder_traversal - 先序遍历二叉树,每次只返回一个元素
          */
         BinaryTreeNode<T> *preorder_traversal() {
+            if (NULL == mRoot)
+                return NULL;
+
             BinaryTreeNode<T> *re;
             int size = mPreOrderQueue.size();
             
@@ -42,6 +45,9 @@ class BinaryTreeBase {
          * inorder_traversal - 中序遍历二叉树,每次只返回一个元素
          */
         BinaryTreeNode<T> *inorder_traversal() {
+            if (NULL == mRoot)
+                return NULL;
+
             BinaryTreeNode<T> *re;
             int size = mInOrderQueue.size();
 
@@ -75,6 +81,9 @@ class BinaryTreeBase {
          * postorder_traversal - 后序遍历,每次只返回一个元素
          */
         BinaryTreeNode<T> *postorder_traversal() {
+            if (NULL == mRoot)
+                return NULL;
+
             BinaryTreeNode<T> *re, *tmp;
             int size = mPostOrderQueue.size();
 
