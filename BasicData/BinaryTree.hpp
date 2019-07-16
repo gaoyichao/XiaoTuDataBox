@@ -120,11 +120,9 @@ class BinaryTree : public BinaryTreeBase<T> {
 };
 
 
-/*******************************************************************************************
- *
- *
- ******************************************************************************************/
-
+/*
+ * BinaryTree - 二叉树指针类型偏特化
+ */
 template <class T, bool isSearchTree>
 class BinaryTree<T*, isSearchTree> : public BinaryTreeBase<T*> {
     public:

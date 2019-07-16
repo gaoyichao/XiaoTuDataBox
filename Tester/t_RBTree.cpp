@@ -241,6 +241,30 @@ TEST(RBTree, remove)
 
 }
 
+TEST(RBPtrTree, insert)
+{
+    RBTree<double*> *tree;
+    BinaryTreeNode<double*> * node;
+    BinaryTreeNode<double*> *node1;
 
+    double values[10];
+    for (int i = 0; i < 10; i++)
+        values[i] = 3.14 * i;
+
+    tree = new RBTree<double*>;
+    EXPECT_TRUE(tree->is_search_tree());
+    tree->insert(&values[2]);
+    node = tree->minimum();
+    EXPECT_EQ(2 * 3.14, *(*node));
+
+    node1 = tree->find(values[2]);
+    EXPECT_EQ(node1, node);
+
+    tree->remove(2 * 3.14);
+    EXPECT_TRUE(tree->empty());
+    tree->insert(&values[2]);
+
+    delete tree;
+}
 
 
