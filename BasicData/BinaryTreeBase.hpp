@@ -13,6 +13,36 @@ class BinaryTreeBase {
         BinaryTreeBase() : mRoot(NULL) { }
         BinaryTreeBase(BinaryTreeNode<T> *root) : mRoot(root) { }
     public:
+
+        BinaryTreeNode<T> *deep_first_traversal() {
+            return preorder_traversal();
+        }
+
+        BinaryTreeNode<T> *breadth_first_traversal() {
+            if (NULL == mRoot)
+                return NULL;
+
+            BinaryTreeNode<T> *re;
+            int size = mQueue.size();
+
+            if (0 == size) {
+                re = mRoot;
+            } else {
+                mQueue.pop_back(re);
+                if (NULL == re)
+                    return NULL;
+            }
+
+            if (NULL != re->l)
+                mQueue.push_front(re->l);
+            if (NULL != re->r)
+                mQueue.push_front(re->r);
+
+            if (0 == mQueue.size())
+                mQueue.push_front(NULL);
+
+            return re;
+        }
         /*
          * preorder_traversal - 先序遍历二叉树,每次只返回一个元素
          */
@@ -21,23 +51,23 @@ class BinaryTreeBase {
                 return NULL;
 
             BinaryTreeNode<T> *re;
-            int size = mPreOrderQueue.size();
+            int size = mQueue.size();
             
             if (0 == size) {
                 re = mRoot;
             } else {
-                mPreOrderQueue.pop_back(re);
+                mQueue.pop_back(re);
                 if (NULL == re)
                     return NULL;
             }
 
             if (NULL != re->r)
-                mPreOrderQueue.push_back(re->r);
+                mQueue.push_back(re->r);
             if (NULL != re->l)
-                mPreOrderQueue.push_back(re->l);
+                mQueue.push_back(re->l);
 
-            if (0 == mPreOrderQueue.size())
-                mPreOrderQueue.push_back(NULL);
+            if (0 == mQueue.size())
+                mQueue.push_back(NULL);
 
             return re;
         }
@@ -49,31 +79,31 @@ class BinaryTreeBase {
                 return NULL;
 
             BinaryTreeNode<T> *re;
-            int size = mInOrderQueue.size();
+            int size = mQueue.size();
 
             if (0 == size) {
                 re = mRoot;
                 while (NULL != re->l) {
-                    mInOrderQueue.push_back(re);
+                    mQueue.push_back(re);
                     re = re->l;
                 }
             } else {
-                mInOrderQueue.pop_back(re);
+                mQueue.pop_back(re);
                 if (NULL == re)
                     return NULL;
             }
 
             if (NULL != re->r) {
-                mInOrderQueue.push_back(re->r);
+                mQueue.push_back(re->r);
                 BinaryTreeNode<T> *root = re->r;
                 while (NULL != root->l) {
-                    mInOrderQueue.push_back(root->l);
+                    mQueue.push_back(root->l);
                     root = root->l;
                 }
             }
 
-            if (0 == mInOrderQueue.size())
-                mInOrderQueue.push_back(NULL);
+            if (0 == mQueue.size())
+                mQueue.push_back(NULL);
 
             return re;
         }
@@ -85,35 +115,35 @@ class BinaryTreeBase {
                 return NULL;
 
             BinaryTreeNode<T> *re, *tmp;
-            int size = mPostOrderQueue.size();
+            int size = mQueue.size();
 
             if (0 == size) {
-                mPostOrderQueue.push_back(mRoot);
-                mPostOrderQueue.push_back(mRoot);
+                mQueue.push_back(mRoot);
+                mQueue.push_back(mRoot);
             }
 
-            mPostOrderQueue.pop_back(re);
+            mQueue.pop_back(re);
             if (NULL == re)
                 return NULL;
 
-            if (!mPostOrderQueue.peek_back(tmp))
-                mPostOrderQueue.push_back(NULL);
+            if (!mQueue.peek_back(tmp))
+                mQueue.push_back(NULL);
 
 
             while (tmp == re) {
                 if (NULL != re->r) {
-                    mPostOrderQueue.push_back(re->r);
-                    mPostOrderQueue.push_back(re->r);
+                    mQueue.push_back(re->r);
+                    mQueue.push_back(re->r);
                 }
 
                 if (NULL != re->l) {
-                    mPostOrderQueue.push_back(re->l);
-                    mPostOrderQueue.push_back(re->l);
+                    mQueue.push_back(re->l);
+                    mQueue.push_back(re->l);
                 }
 
-                mPostOrderQueue.pop_back(re);
-                if (!mPostOrderQueue.peek_back(tmp)) {
-                    mPostOrderQueue.push_back(NULL);
+                mQueue.pop_back(re);
+                if (!mQueue.peek_back(tmp)) {
+                    mQueue.push_back(NULL);
                     break;
                 }
             }
@@ -171,9 +201,7 @@ class BinaryTreeBase {
         bool empty() const { return NULL == this->mRoot; }
     protected:
         BinaryTreeNode<T> *mRoot;
-        DataQueue<BinaryTreeNode<T> *> mPreOrderQueue;
-        DataQueue<BinaryTreeNode<T> *> mInOrderQueue;
-        DataQueue<BinaryTreeNode<T> *> mPostOrderQueue;
+        DataQueue<BinaryTreeNode<T> *> mQueue;
 };
 
 #endif

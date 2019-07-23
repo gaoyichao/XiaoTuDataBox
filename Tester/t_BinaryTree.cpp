@@ -193,6 +193,42 @@ TEST(BinaryTree, traversal)
         i++;
     }
 
+    // 广度优先遍历
+    i = 0;
+    oracle[0] = 0.0;
+    oracle[1] = 1.0;
+    oracle[2] = 2.0;
+    oracle[3] = 3.0;
+    oracle[4] = 4.0;
+    oracle[5] = 0.0;
+    oracle[6] = 1.0;
+    oracle[7] = 2.0;
+    oracle[8] = 3.0;
+    oracle[9] = 4.0;
+    for (auto node = tree.breadth_first_traversal(); NULL != node; node = tree.breadth_first_traversal()) {
+        EXPECT_EQ(oracle[i], *node);
+        i++;
+    }
+
+    // 深度优先遍历
+    i = 0;
+    oracle[0] = 0.0;
+    oracle[1] = 1.0;
+    oracle[2] = 3.0;
+    oracle[3] = 4.0;
+    oracle[4] = 2.0;
+    oracle[5] = 0.0;
+    oracle[6] = 1.0;
+    oracle[7] = 3.0;
+    oracle[8] = 4.0;
+    oracle[9] = 2.0;
+    for (auto node = tree.deep_first_traversal(); NULL != node; node = tree.deep_first_traversal()) {
+        EXPECT_EQ(oracle[i], *node);
+        i++;
+    }
+
+
+
     delete [] nodes;
     delete [] nodes1;
 }
