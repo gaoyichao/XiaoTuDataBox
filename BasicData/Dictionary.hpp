@@ -13,7 +13,7 @@ class Dictionary {
             NodeType *pNode = &root;
 
             for (int i = 0; i < len; i++)
-                pNode = pNode->add_child(buf[i]);
+                pNode = pNode->add_child(new NodeType(buf[i]));
 
             return pNode;
         }
@@ -38,9 +38,13 @@ class Dictionary {
 
             NodeType *p = pNode->p;
             while (NULL != p) {
-                p->remove_child(pNode->key);
+                NodeType *tmp = p->remove_child(pNode->key);
+                if (NULL == tmp)
+                    break;
                 pNode = p;
                 p = pNode->p;
+
+                delete tmp;
             }
 
             return true;
@@ -48,6 +52,7 @@ class Dictionary {
 
     private:
         NodeType root;
+        DataQueue<NodeType *> mQueue;
 };
 
 template <class ValueType>
@@ -60,10 +65,11 @@ class Dictionary<char, ValueType> {
             NodeType *pNode = &root;
             int len = str.size();
 
-            for (int i = 0; i < len; i++)
-                pNode = pNode->add_child(str[i]);
+            for (int i = 0; i < len; i++) {
+                pNode = pNode->add_child(new NodeType(str[i]));
+            }
 
-            pNode = pNode->add_child('\0');
+            pNode = pNode->add_child(new NodeType('\0'));
             return pNode;
         }
 
@@ -87,13 +93,17 @@ class Dictionary<char, ValueType> {
 
             NodeType *p = pNode->p;
             while (NULL != p) {
-                p->remove_child(pNode->key);
+                NodeType *tmp = pNode;
+                if (!p->remove_child(pNode->key))
+                    break;
+
                 pNode = p;
                 p = pNode->p;
+
+                delete tmp;
             }
             return true;
         }
-
 
     private:
         NodeType root;

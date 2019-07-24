@@ -14,26 +14,25 @@ class DictionaryNode {
         DictionaryNode(KeyType const & data) : depth(0), p(NULL), key(data) {}
         DictionaryNode(DictionaryNode const &node) : depth(0), p(NULL), key(node.key) {}
         ~DictionaryNode() {
-            BinaryTreeNode<DictionaryNode*> * node;
-            for (node = children.inorder_traversal(); NULL != node; node = children.inorder_traversal()) {
-                delete node->key;
-            }
         }
     private:
         DictionaryNode & operator = (DictionaryNode const &node) { key = node.key; }
 
     public:
-        DictionaryNode * add_child(KeyType const & data) {
-            RBTreeNode<DictionaryNode*> *rbnode = children.find(data);
+        DictionaryNode * add_child(DictionaryNode * node) {
+            if (NULL == node)
+                return NULL;
+
+            RBTreeNode<DictionaryNode*> *rbnode = children.find(node->key);
 
             if (NULL == rbnode) {
-                DictionaryNode *node = new DictionaryNode(data);
                 rbnode = children.insert(node);
                 rbnode->key->depth = depth+1;
                 rbnode->key->p = this;
+                return node;
+            } else {
+                return NULL;
             }
-
-            return rbnode->key;
         }
 
         DictionaryNode * find_child(KeyType const & data) {

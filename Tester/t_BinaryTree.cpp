@@ -77,8 +77,8 @@ TEST(BinaryTree, init)
     oracle[2] = 3.0;
     oracle[3] = 4.0;
     oracle[4] = 2.0;
-    for (auto node = tree.preorder_traversal(); NULL != node; node = tree.preorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::PreOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -89,8 +89,8 @@ TEST(BinaryTree, init)
     oracle[2] = 4.0;
     oracle[3] = 0.0;
     oracle[4] = 2.0;
-    for (auto node = tree.inorder_traversal(); NULL != node; node = tree.inorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::InOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -101,20 +101,21 @@ TEST(BinaryTree, init)
     oracle[2] = 1.0;
     oracle[3] = 2.0;
     oracle[4] = 0.0;
-    for (auto node = tree.postorder_traversal(); NULL != node; node = tree.postorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::PostOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
+
 
     delete [] nodes;
 
 
     BinaryTree<double, false> tree2;
-    BinaryTreeNode<double> *ptrnode = tree2.postorder_traversal();
-    EXPECT_EQ(NULL, ptrnode);
+    BinaryTree<double, false>::PostOrderIterator it(tree2);
+    EXPECT_TRUE(NULL == it);
 }
 
-TEST(BinaryTree, traversal)
+TEST(BinaryTree, iterator)
 {
     BinaryTreeNode<double> *nodes = new BinaryTreeNode<double>[5];
     BinaryTreeNode<double> *nodes1 = new BinaryTreeNode<double>[5];
@@ -152,8 +153,8 @@ TEST(BinaryTree, traversal)
     oracle[7] = 3.0;
     oracle[8] = 4.0;
     oracle[9] = 2.0;
-    for (auto node = tree.preorder_traversal(); NULL != node; node = tree.preorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::PreOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -169,12 +170,10 @@ TEST(BinaryTree, traversal)
     oracle[7] = 0.0;
     oracle[8] = 2.0;
     oracle[9] = 2.0;
- 
-    for (auto node = tree.inorder_traversal(); NULL != node; node = tree.inorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::InOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
-
     // 后序遍历
     i = 0;
     oracle[0] = 3.0;
@@ -187,26 +186,8 @@ TEST(BinaryTree, traversal)
     oracle[7] = 0.0;
     oracle[8] = 2.0;
     oracle[9] = 0.0;
- 
-    for (auto node = tree.postorder_traversal(); NULL != node; node = tree.postorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
-        i++;
-    }
-
-    // 广度优先遍历
-    i = 0;
-    oracle[0] = 0.0;
-    oracle[1] = 1.0;
-    oracle[2] = 2.0;
-    oracle[3] = 3.0;
-    oracle[4] = 4.0;
-    oracle[5] = 0.0;
-    oracle[6] = 1.0;
-    oracle[7] = 2.0;
-    oracle[8] = 3.0;
-    oracle[9] = 4.0;
-    for (auto node = tree.breadth_first_traversal(); NULL != node; node = tree.breadth_first_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::PostOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -222,16 +203,33 @@ TEST(BinaryTree, traversal)
     oracle[7] = 3.0;
     oracle[8] = 4.0;
     oracle[9] = 2.0;
-    for (auto node = tree.deep_first_traversal(); NULL != node; node = tree.deep_first_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::DepthFirstIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
-
+    // 广度优先遍历
+    i = 0;
+    oracle[0] = 0.0;
+    oracle[1] = 1.0;
+    oracle[2] = 2.0;
+    oracle[3] = 3.0;
+    oracle[4] = 4.0;
+    oracle[5] = 0.0;
+    oracle[6] = 1.0;
+    oracle[7] = 2.0;
+    oracle[8] = 3.0;
+    oracle[9] = 4.0;
+    for (BinaryTree<double, false>::BreadthFirstIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
+        i++;
+    }
 
     delete [] nodes;
     delete [] nodes1;
 }
+ 
+
 
 TEST(BinaryTree, replace_subtree)
 {
@@ -279,8 +277,8 @@ TEST(BinaryTree, replace_subtree)
     oracle[7] = 13.0;
     oracle[8] = 14.0;
     oracle[9] = 12.0;
-    for (auto node = tree.preorder_traversal(); NULL != node; node = tree.preorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::PreOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -296,9 +294,8 @@ TEST(BinaryTree, replace_subtree)
     oracle[7] = 10.0;
     oracle[8] = 12.0;
     oracle[9] = 2.0;
- 
-    for (auto node = tree.inorder_traversal(); NULL != node; node = tree.inorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::InOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -314,8 +311,8 @@ TEST(BinaryTree, replace_subtree)
     oracle[7] = 10.0;
     oracle[8] = 2.0;
     oracle[9] = 0.0;
-    for (auto node = tree.postorder_traversal(); NULL != node; node = tree.postorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::PostOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -354,8 +351,8 @@ TEST(BinaryTree, insert)
     oracle[2] = 2.0;
     oracle[3] = 3.0;
     oracle[4] = 4.0;
-    for (node = tree->inorder_traversal(); NULL != node; node = tree->inorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::InOrderIterator it(*tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -365,8 +362,8 @@ TEST(BinaryTree, insert)
     oracle[2] = 3.0;
     oracle[3] = 4.0;
     oracle[4] = 2.0;
-    for (node = tree->postorder_traversal(); NULL != node; node = tree->postorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::PostOrderIterator it(*tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -458,8 +455,8 @@ TEST(BinaryTree, remove)
     oracle[1] = 1.0;
     oracle[2] = 3.0;
     oracle[3] = 4.0;
-    for (node = tree.inorder_traversal(); NULL != node; node = tree.inorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::InOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 
@@ -471,8 +468,8 @@ TEST(BinaryTree, remove)
     oracle[0] = 0.0;
     oracle[1] = 1.0;
     oracle[2] = 4.0;
-    for (node = tree.inorder_traversal(); NULL != node; node = tree.inorder_traversal()) {
-        EXPECT_EQ(oracle[i], *node);
+    for (BinaryTree<double, false>::InOrderIterator it(tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *it);
         i++;
     }
 }
@@ -521,8 +518,8 @@ TEST(BinaryPtrTree, insert)
     tree->insert(&oracle[3]);
 
     int i = 0;
-    for (node = tree->inorder_traversal(); NULL != node; node = tree->inorder_traversal()) {
-        EXPECT_EQ(oracle[i], *(*node));
+    for (BinaryTree<double*>::InOrderIterator it(*tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle[i], *(*it));
         i++;
     }
 
@@ -533,8 +530,8 @@ TEST(BinaryPtrTree, insert)
     oracle1[2] = 1.0;
     oracle1[3] = 4.0;
     oracle1[4] = 3.0;
-    for (node = tree->preorder_traversal(); NULL != node; node = tree->preorder_traversal()) {
-        EXPECT_EQ(oracle1[i], *(*node));
+    for (BinaryTree<double*>::PreOrderIterator it(*tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle1[i], *(*it));
         i++;
     }
 
@@ -545,8 +542,8 @@ TEST(BinaryPtrTree, insert)
     oracle1[2] = 3.0;
     oracle1[3] = 4.0;
     oracle1[4] = 2.0;
-    for (node = tree->postorder_traversal(); NULL != node; node = tree->postorder_traversal()) {
-        EXPECT_EQ(oracle1[i], *(*node));
+    for (BinaryTree<double*>::PostOrderIterator it(*tree); NULL != it; ++it) {
+        EXPECT_EQ(oracle1[i], *(*it));
         i++;
     }
 

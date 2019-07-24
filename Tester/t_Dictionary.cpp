@@ -28,14 +28,15 @@ TEST(DictionaryNode, add_remove)
     DictionaryNode<char, double> node('a');
     EXPECT_EQ('a', node.key);
 
-    DictionaryNode<char, double> *b = node.add_child('b');
+    DictionaryNode<char, double> *b = node.add_child(new DictionaryNode<char, double>('b'));
     EXPECT_EQ('b', *b);
     EXPECT_EQ(1, b->depth);
 
-    DictionaryNode<char, double> *c = node.add_child('b');
-    EXPECT_EQ(c, b);
+    DictionaryNode<char, double> *c = new DictionaryNode<char, double>('b');
+    DictionaryNode<char, double> *d = node.add_child(c);
+    EXPECT_EQ(NULL, d);
 
-    c = node.add_child('c');
+    c = node.add_child(new DictionaryNode<char, double>('c'));
     EXPECT_EQ('c', *c);
 
     EXPECT_TRUE(node.remove_child('b'));
@@ -53,13 +54,13 @@ TEST(DictionaryNode, trace_back)
     DictionaryNode<int, double> node('d');
     DictionaryNode<int, double> *p;
     
-    p = node.add_child('o');
-    p = p->add_child('u');
-    p = p->add_child('n');
-    p = p->add_child('i');
-    p = p->add_child('w');
-    p = p->add_child('a');
-    p = p->add_child('n');
+    p = node.add_child(new DictionaryNode<int, double>('o'));
+    p = p->add_child(new DictionaryNode<int, double>('u'));
+    p = p->add_child(new DictionaryNode<int, double>('n'));
+    p = p->add_child(new DictionaryNode<int, double>('i'));
+    p = p->add_child(new DictionaryNode<int, double>('w'));
+    p = p->add_child(new DictionaryNode<int, double>('a'));
+    p = p->add_child(new DictionaryNode<int, double>('n'));
     EXPECT_EQ('n', *p);
     EXPECT_EQ(7, p->depth);
 

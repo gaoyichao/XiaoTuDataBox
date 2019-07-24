@@ -2,6 +2,7 @@
 #define BINARYTREEBASE_HPP
 
 #include <BinaryTreeNode.hpp>
+#include <BinaryTreeIterator.hpp>
 #include <DataQueue.hpp>
 #include <iostream>
 /*
@@ -10,147 +11,23 @@
 template <class T>
 class BinaryTreeBase {
     public:
+        typedef BinaryTreeIteratorBase<T> IteratorBase;
+        typedef BinaryTreePreOrderIterator<T> PreOrderIterator;
+        typedef BinaryTreeInOrderIterator<T> InOrderIterator;
+        typedef BinaryTreePostOrderIterator<T> PostOrderIterator;
+        typedef BinaryTreePreOrderIterator<T> DepthFirstIterator;
+        typedef BinaryTreeBreadthFirstIterator<T> BreadthFirstIterator;
+
+        friend IteratorBase;
+        friend PreOrderIterator;
+        friend InOrderIterator;
+        friend PostOrderIterator;
+        friend DepthFirstIterator;
+        friend BreadthFirstIterator;
+    public:
         BinaryTreeBase() : mRoot(NULL) { }
         BinaryTreeBase(BinaryTreeNode<T> *root) : mRoot(root) { }
     public:
-
-        BinaryTreeNode<T> *deep_first_traversal() {
-            return preorder_traversal();
-        }
-
-        BinaryTreeNode<T> *breadth_first_traversal() {
-            if (NULL == mRoot)
-                return NULL;
-
-            BinaryTreeNode<T> *re;
-            int size = mQueue.size();
-
-            if (0 == size) {
-                re = mRoot;
-            } else {
-                mQueue.pop_back(re);
-                if (NULL == re)
-                    return NULL;
-            }
-
-            if (NULL != re->l)
-                mQueue.push_front(re->l);
-            if (NULL != re->r)
-                mQueue.push_front(re->r);
-
-            if (0 == mQueue.size())
-                mQueue.push_front(NULL);
-
-            return re;
-        }
-        /*
-         * preorder_traversal - 先序遍历二叉树,每次只返回一个元素
-         */
-        BinaryTreeNode<T> *preorder_traversal() {
-            if (NULL == mRoot)
-                return NULL;
-
-            BinaryTreeNode<T> *re;
-            int size = mQueue.size();
-            
-            if (0 == size) {
-                re = mRoot;
-            } else {
-                mQueue.pop_back(re);
-                if (NULL == re)
-                    return NULL;
-            }
-
-            if (NULL != re->r)
-                mQueue.push_back(re->r);
-            if (NULL != re->l)
-                mQueue.push_back(re->l);
-
-            if (0 == mQueue.size())
-                mQueue.push_back(NULL);
-
-            return re;
-        }
-        /*
-         * inorder_traversal - 中序遍历二叉树,每次只返回一个元素
-         */
-        BinaryTreeNode<T> *inorder_traversal() {
-            if (NULL == mRoot)
-                return NULL;
-
-            BinaryTreeNode<T> *re;
-            int size = mQueue.size();
-
-            if (0 == size) {
-                re = mRoot;
-                while (NULL != re->l) {
-                    mQueue.push_back(re);
-                    re = re->l;
-                }
-            } else {
-                mQueue.pop_back(re);
-                if (NULL == re)
-                    return NULL;
-            }
-
-            if (NULL != re->r) {
-                mQueue.push_back(re->r);
-                BinaryTreeNode<T> *root = re->r;
-                while (NULL != root->l) {
-                    mQueue.push_back(root->l);
-                    root = root->l;
-                }
-            }
-
-            if (0 == mQueue.size())
-                mQueue.push_back(NULL);
-
-            return re;
-        }
-        /*
-         * postorder_traversal - 后序遍历,每次只返回一个元素
-         */
-        BinaryTreeNode<T> *postorder_traversal() {
-            if (NULL == mRoot)
-                return NULL;
-
-            BinaryTreeNode<T> *re, *tmp;
-            int size = mQueue.size();
-
-            if (0 == size) {
-                mQueue.push_back(mRoot);
-                mQueue.push_back(mRoot);
-            }
-
-            mQueue.pop_back(re);
-            if (NULL == re)
-                return NULL;
-
-            if (!mQueue.peek_back(tmp))
-                mQueue.push_back(NULL);
-
-
-            while (tmp == re) {
-                if (NULL != re->r) {
-                    mQueue.push_back(re->r);
-                    mQueue.push_back(re->r);
-                }
-
-                if (NULL != re->l) {
-                    mQueue.push_back(re->l);
-                    mQueue.push_back(re->l);
-                }
-
-                mQueue.pop_back(re);
-                if (!mQueue.peek_back(tmp)) {
-                    mQueue.push_back(NULL);
-                    break;
-                }
-            }
-
-            return re;
-        }
-
         /*
          * minimum - 获取树中的最小节点(最左节点)
          */
@@ -201,7 +78,6 @@ class BinaryTreeBase {
         bool empty() const { return NULL == this->mRoot; }
     protected:
         BinaryTreeNode<T> *mRoot;
-        DataQueue<BinaryTreeNode<T> *> mQueue;
 };
 
 #endif

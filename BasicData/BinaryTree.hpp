@@ -3,6 +3,7 @@
 
 #include <BinaryTreeBase.hpp>
 
+
 /*
  * BinaryTree - 二叉树
  */
@@ -16,8 +17,8 @@ class BinaryTree : public BinaryTreeBase<T> {
                 return;
             BinaryTreeNode<T> * node;
             if (NULL != this->mRoot) {
-                for (node = this->postorder_traversal(); NULL != node; node = this->postorder_traversal()) {
-                    delete node;
+                for (BinaryTreePostOrderIterator<T> it(*this); NULL != it; ++it) {
+                    delete it.ptr();
                 }
             }
         }
@@ -133,8 +134,8 @@ class BinaryTree<T*, isSearchTree> : public BinaryTreeBase<T*> {
                 return;
             BinaryTreeNode<T*> * node;
             if (NULL != this->mRoot) {
-                for (node = this->postorder_traversal(); NULL != node; node = this->postorder_traversal()) {
-                    delete node;
+                for (BinaryTreePostOrderIterator<T*> it(*this); NULL != it; ++it) {
+                    delete it.ptr();
                 }
             }
         }
