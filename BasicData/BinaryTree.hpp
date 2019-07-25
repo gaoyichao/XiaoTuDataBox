@@ -15,9 +15,8 @@ class BinaryTree : public BinaryTreeBase<T> {
         ~BinaryTree() {
             if (!isSearchTree)
                 return;
-            BinaryTreeNode<T> * node;
             if (NULL != this->mRoot) {
-                for (BinaryTreePostOrderIterator<T> it(*this); NULL != it; ++it) {
+                for (BinaryTreePreOrderIterator<T> it(*this); NULL != it; ++it) {
                     delete it.ptr();
                 }
             }
@@ -132,7 +131,6 @@ class BinaryTree<T*, isSearchTree> : public BinaryTreeBase<T*> {
         ~BinaryTree() {
             if (!isSearchTree)
                 return;
-            BinaryTreeNode<T*> * node;
             if (NULL != this->mRoot) {
                 for (BinaryTreePostOrderIterator<T*> it(*this); NULL != it; ++it) {
                     delete it.ptr();

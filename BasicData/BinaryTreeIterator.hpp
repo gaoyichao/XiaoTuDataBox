@@ -13,24 +13,23 @@ class BinaryTreeBase;
 template <class T>
 class BinaryTreeIteratorBase {
     typedef BinaryTreeNode<T> NodeType;
-    typedef BinaryTreeNode<T>* NodeTypePtr;
     public:
         BinaryTreeIteratorBase(BinaryTreeBase<T> & tree) : mtree(tree) { }
         BinaryTreeIteratorBase(BinaryTreeIteratorBase & it) : mtree(it.mtree) { }
 
-        friend bool operator == (NodeTypePtr ptr, BinaryTreeIteratorBase const & it) { return ptr == it.cur; }
-        friend bool operator == (BinaryTreeIteratorBase const & it, NodeTypePtr ptr) { return ptr == it.cur; }
-        friend bool operator != (NodeTypePtr ptr, BinaryTreeIteratorBase const & it) { return ptr != it.cur; }
-        friend bool operator != (BinaryTreeIteratorBase const & it, NodeTypePtr ptr) { return ptr != it.cur; }
+        friend bool operator == (NodeType * ptr, BinaryTreeIteratorBase const & it) { return ptr == it.cur; }
+        friend bool operator == (BinaryTreeIteratorBase const & it, NodeType * ptr) { return ptr == it.cur; }
+        friend bool operator != (NodeType * ptr, BinaryTreeIteratorBase const & it) { return ptr != it.cur; }
+        friend bool operator != (BinaryTreeIteratorBase const & it, NodeType * ptr) { return ptr != it.cur; }
 
-        BinaryTreeNode<T>* ptr() { return cur; }
+        NodeType * ptr() { return cur; }
 
-        BinaryTreeNode<T>* operator -> () { return cur; }
+        NodeType * operator -> () { return cur; }
         NodeType & operator * () { return *cur; }
     protected:
-        NodeTypePtr cur;
+        NodeType * cur;
         BinaryTreeBase<T> & mtree;
-        DataQueue<BinaryTreeNode<T>*> mQueue;
+        DataQueue<NodeType*> mQueue;
 };
 
 /*
@@ -40,7 +39,6 @@ template <class T>
 class BinaryTreePreOrderIterator : public BinaryTreeIteratorBase<T> {
     typedef BinaryTreeIteratorBase<T> IteratorBase;
     typedef BinaryTreeNode<T> NodeType;
-    typedef BinaryTreeNode<T>* NodeTypePtr;
     public:
         BinaryTreePreOrderIterator(BinaryTreeBase<T> & tree) : IteratorBase(tree) {
             this->cur = traversal();
@@ -54,7 +52,7 @@ class BinaryTreePreOrderIterator : public BinaryTreeIteratorBase<T> {
             return *this;
         }
     private:
-        NodeTypePtr traversal() {
+        NodeType * traversal() {
             if (NULL == this->mtree.mRoot)
                 return NULL;
 
@@ -88,7 +86,6 @@ template <class T>
 class BinaryTreeInOrderIterator : public BinaryTreeIteratorBase<T> {
     typedef BinaryTreeIteratorBase<T> IteratorBase;
     typedef BinaryTreeNode<T> NodeType;
-    typedef BinaryTreeNode<T>* NodeTypePtr;
     public:
         BinaryTreeInOrderIterator(BinaryTreeBase<T> & tree) : IteratorBase(tree) {
             this->cur = traversal();
@@ -102,7 +99,7 @@ class BinaryTreeInOrderIterator : public BinaryTreeIteratorBase<T> {
             return *this;
         }
     private:
-        NodeTypePtr traversal() {
+        NodeType * traversal() {
             if (NULL == this->mtree.mRoot)
                 return NULL;
 
@@ -144,7 +141,6 @@ template <class T>
 class BinaryTreePostOrderIterator : public BinaryTreeIteratorBase<T> {
     typedef BinaryTreeIteratorBase<T> IteratorBase;
     typedef BinaryTreeNode<T> NodeType;
-    typedef BinaryTreeNode<T>* NodeTypePtr;
     public:
         BinaryTreePostOrderIterator(BinaryTreeBase<T> & tree) : IteratorBase(tree) {
             this->cur = traversal();
@@ -158,7 +154,7 @@ class BinaryTreePostOrderIterator : public BinaryTreeIteratorBase<T> {
             return *this;
         }
     private:
-        NodeTypePtr traversal() {
+        NodeType * traversal() {
             if (NULL == this->mtree.mRoot)
                 return NULL;
 
@@ -207,7 +203,6 @@ template <class T>
 class BinaryTreeBreadthFirstIterator : public BinaryTreeIteratorBase<T> {
     typedef BinaryTreeIteratorBase<T> IteratorBase;
     typedef BinaryTreeNode<T> NodeType;
-    typedef BinaryTreeNode<T>* NodeTypePtr;
     public:
         BinaryTreeBreadthFirstIterator(BinaryTreeBase<T> & tree) : IteratorBase(tree) {
             this->cur = traversal();
@@ -222,11 +217,11 @@ class BinaryTreeBreadthFirstIterator : public BinaryTreeIteratorBase<T> {
         }
 
     private:
-        NodeTypePtr traversal() {
+        NodeType * traversal() {
             if (NULL == this->mtree.mRoot)
                 return NULL;
 
-            NodeTypePtr re;
+            NodeType * re;
             int size = this->mQueue.size();
 
             if (0 == size) {

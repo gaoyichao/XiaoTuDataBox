@@ -9,7 +9,6 @@ class BinaryTreeNode {
     public:
         BinaryTreeNode() : p(NULL), l(NULL), r(NULL) { }
         BinaryTreeNode(T const & data) : p(NULL), l(NULL), r(NULL), key(data) { }
-
     private:
         /*
          * 屏蔽拷贝构造函数和赋值运算

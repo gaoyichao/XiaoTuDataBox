@@ -4,26 +4,24 @@
 #include <RBTree.hpp>
 #include <iostream>
 
-template <class KeyType, class ValueType> class Dictionary;
-
 template <class KeyType, class ValueType>
-class DictionaryNode {
-    friend class Dictionary<KeyType, ValueType>;
+class DicBase;
+
+template <class KeyType>
+class DicNodeBase {
     public:
-        DictionaryNode() : depth(0), p(NULL) {}
-        DictionaryNode(KeyType const & data) : depth(0), p(NULL), key(data) {}
-        DictionaryNode(DictionaryNode const &node) : depth(0), p(NULL), key(node.key) {}
-        ~DictionaryNode() {
-        }
+        DicNodeBase() : depth(0), p(NULL) {}
+        DicNodeBase(KeyType const & data) : depth(0), p(NULL), key(data) {}
+        DicNodeBase(DicNodeBase const &node) : depth(0), p(NULL), key(node.key) {}
     private:
-        DictionaryNode & operator = (DictionaryNode const &node) { key = node.key; }
+        DicNodeBase & operator = (DicNodeBase const &node) { key = node.key; }
 
     public:
-        DictionaryNode * add_child(DictionaryNode * node) {
+        DicNodeBase * add_child(DicNodeBase * node) {
             if (NULL == node)
                 return NULL;
 
-            RBTreeNode<DictionaryNode*> *rbnode = children.find(node->key);
+            RBTreeNode<DicNodeBase*> *rbnode = children.find(node->key);
 
             if (NULL == rbnode) {
                 rbnode = children.insert(node);
@@ -35,8 +33,8 @@ class DictionaryNode {
             }
         }
 
-        DictionaryNode * find_child(KeyType const & data) {
-            RBTreeNode<DictionaryNode*> *rbnode = children.find(data);
+        DicNodeBase * find_child(KeyType const & data) {
+            RBTreeNode<DicNodeBase*> *rbnode = children.find(data);
 
             if (NULL == rbnode)
                 return NULL;
@@ -45,7 +43,7 @@ class DictionaryNode {
         }
 
         bool remove_child(KeyType const & data) {
-            RBTreeNode<DictionaryNode*> *rbnode = children.find(data);
+            RBTreeNode<DicNodeBase*> *rbnode = children.find(data);
 
             if (NULL == rbnode || !rbnode->key->children.empty())
                 return false;
@@ -55,7 +53,7 @@ class DictionaryNode {
         }
 
         int trace_back(KeyType *buf, int len) const {
-            DictionaryNode const *pNode = this;
+            DicNodeBase const *pNode = this;
 
             len = (depth < len) ? depth : len;
             int re = len;
@@ -71,7 +69,7 @@ class DictionaryNode {
         int num_children() const { return children.size(); }
 
     public:
-        DictionaryNode & operator = (KeyType const &data) {
+        DicNodeBase & operator = (KeyType const &data) {
             key = data;
             return *this;
         }
@@ -81,13 +79,17 @@ class DictionaryNode {
 
     public:
         KeyType key;
-        ValueType value;
         int depth;
-        DictionaryNode *p;
-    protected:
-        RBTree<DictionaryNode*> children; 
+        DicNodeBase *p;
+        RBTree<DicNodeBase*> children; 
 };
 
+template <class KeyType, class ValueType>
+class DicEndNode : public DicNodeBase<KeyType> {
+    public:
+        DicEndNode(KeyType const & k, ValueType const & v) : DicNodeBase<KeyType>(k), value(v) {}
+        ValueType value; 
+};
 
 #endif
 

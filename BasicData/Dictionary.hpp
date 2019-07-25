@@ -2,95 +2,61 @@
 #define DICTIONARY_HPP
 
 #include <DictionaryNode.hpp>
+#include <DictionaryIterator.hpp>
 
 template <class KeyType, class ValueType>
-class Dictionary {
-        typedef DictionaryNode<KeyType, ValueType> NodeType;
+class DicBase {
     public:
-        Dictionary() { root.depth = -1; }
-        
-        NodeType * insert(KeyType const * buf, int len) {
-            NodeType *pNode = &root;
+        typedef DicNodeBase<KeyType> NodeType;
+        typedef DicEndNode<KeyType, ValueType> EndNodeType;
+ 
+        typedef DicIteratorBase<KeyType, ValueType> IteratorBase;
+        typedef DicPreOrderIterator<KeyType, ValueType> PreOrderIterator;
+        typedef DicPostOrderIterator<KeyType, ValueType> PostOrderIterator;
+        typedef DicPreOrderIterator<KeyType, ValueType> DepthFirstIterator;
+        typedef DicBreadthFirstIterator<KeyType, ValueType> BreadthFirstIterator;
+
+        friend IteratorBase;
+        friend PreOrderIterator;
+        friend PostOrderIterator;
+        friend DepthFirstIterator;
+        friend BreadthFirstIterator;
+    public:
+        DicBase() { mRoot.depth = -1; }
+
+         ~DicBase() {
+            DicPreOrderIterator<KeyType, ValueType> it(*this);
+            ++it;
+            for (; NULL != it; ++it) {
+                delete it.ptr();
+            }
+        }
+
+       
+        EndNodeType * insert(ValueType const & value, KeyType const * buf, int len, KeyType const & zeroKey) {
+            NodeType *pNode = &mRoot;
 
             for (int i = 0; i < len; i++)
                 pNode = pNode->add_child(new NodeType(buf[i]));
 
-            return pNode;
+            return (EndNodeType*)pNode->add_child(new EndNodeType(zeroKey, value));
         }
 
-        NodeType * find(KeyType const * buf, int len) {
-            NodeType *pNode = &root;
+        EndNodeType * find(KeyType const * buf, int len, KeyType const & zeroKey) {
+            NodeType *pNode = &mRoot;
 
             for (int i = 0; i < len; i++) {
                 pNode = pNode->find_child(buf[i]);
                 if (NULL == pNode)
                     return NULL;
             }
-
-            return pNode;
+            return (EndNodeType*)pNode->find_child(zeroKey);
         }
         
-        bool remove(KeyType const * buf, int len) {
-            NodeType *pNode = find(buf, len);
-
+        bool remove(KeyType const * buf, int len, KeyType const & zeroKey) {
+            NodeType *pNode = find(buf, len, zeroKey);
             if (NULL == pNode || pNode->num_children() > 0)
                 return false;
-
-            NodeType *p = pNode->p;
-            while (NULL != p) {
-                NodeType *tmp = p->remove_child(pNode->key);
-                if (NULL == tmp)
-                    break;
-                pNode = p;
-                p = pNode->p;
-
-                delete tmp;
-            }
-
-            return true;
-        }
-
-    private:
-        NodeType root;
-        DataQueue<NodeType *> mQueue;
-};
-
-template <class ValueType>
-class Dictionary<char, ValueType> {
-        typedef DictionaryNode<char, ValueType> NodeType;
-    public:
-        Dictionary() { root.depth = -1; }
-
-        NodeType * insert(std::string const & str) {
-            NodeType *pNode = &root;
-            int len = str.size();
-
-            for (int i = 0; i < len; i++) {
-                pNode = pNode->add_child(new NodeType(str[i]));
-            }
-
-            pNode = pNode->add_child(new NodeType('\0'));
-            return pNode;
-        }
-
-        NodeType * find(std::string const & str) {
-            NodeType *pNode = &root;
-            int len = str.size();
-
-            for (int i = 0; i < len; i++) {
-                pNode = pNode->find_child(str[i]);
-                if (NULL == pNode)
-                    return NULL;
-            }
-            pNode = pNode->find_child('\0');
-            return pNode;
-        }
-
-        bool remove(std::string const & str) {
-            NodeType *pNode = find(str);
-            if (NULL == pNode)
-                return false;
-
             NodeType *p = pNode->p;
             while (NULL != p) {
                 NodeType *tmp = pNode;
@@ -105,8 +71,46 @@ class Dictionary<char, ValueType> {
             return true;
         }
 
-    private:
-        NodeType root;
+    protected:
+        NodeType mRoot;
+};
+
+template <class KeyType, class ValueType>
+class Dictionary : public DicBase<KeyType, ValueType> {
+     public:
+        Dictionary() {
+            this->mRoot.depth = -1;
+        }
+};
+
+template <class ValueType>
+class Dictionary<char, ValueType> : public DicBase<char, ValueType> {
+    public:
+        typedef DicNodeBase<char> NodeType;
+        typedef DicEndNode<char, ValueType> EndNodeType;
+     public:
+        Dictionary() {
+            this->mRoot.depth = -1;
+            this->mRoot.key = 'A';
+        }
+
+        EndNodeType * insert(std::string const & str, ValueType const & v) {
+            int len = str.size();
+            DicBase<char, ValueType> *base = (DicBase<char, ValueType>*)this;
+            return base->insert(v, str.c_str(), len, '\0');
+        }
+
+        EndNodeType * find(std::string const & str) {
+            int len = str.size();
+            DicBase<char, ValueType> *base = (DicBase<char, ValueType>*)this;
+            return base->find(str.c_str(), len, '\0');
+        }
+
+        bool remove(std::string const & str) {
+            int len = str.size();
+            DicBase<char, ValueType> *base = (DicBase<char, ValueType>*)this;
+            return base->remove(str.c_str(), len, '\0');
+        }
 };
 
 #endif
