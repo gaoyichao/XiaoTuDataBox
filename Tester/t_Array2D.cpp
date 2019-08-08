@@ -5,12 +5,20 @@
 
 TEST(Array2D, init)
 {
-    Array2D<3, 3, double> array;
+    Array2D<double> *array = new Array2D<double>(3, 3);
 
-    for (int i = 0; i < array.n(); i++)
-        array(i) = 0.1 * i;
+    for (int i = 0; i < array->size(); i++)
+        (*array)(i) = 0.1 * i;
     
-    std::cout << array << std::endl;
+    EXPECT_EQ(9, array->size());
+    std::cout << *array << std::endl;
+
+    delete array;
+
+    array = new Array2D<double>(3, 3, 1.41421);
+    std::cout << *array << std::endl;
+
+    delete array;
 }
 
 

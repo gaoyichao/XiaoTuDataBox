@@ -7,7 +7,8 @@
 #include <DataArray.hpp>
 
 template <class NodeType, class EdgeType>
-class Graph {
+class Graph
+{
     public:
         Graph() {};
 

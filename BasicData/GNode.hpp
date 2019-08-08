@@ -63,6 +63,12 @@ class GNode {
         & operator NodeType() { return key; }
         & operator const NodeType() const { return key; }
 
+        friend std::ostream & operator << (std::ostream & stream, GNode const & n) {
+            stream << n.key;
+            return stream;
+        }
+
+
     public:
         NodeType key;
         DataArray<GEdge<NodeType, EdgeType> *> inEdges;

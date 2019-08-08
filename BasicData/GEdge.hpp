@@ -3,11 +3,13 @@
 
 template <class NodeType, class EdgeType> class GNode;
 template <class NodeType, class EdgeType> class Graph;
+template <class NodeType, class EdgeType> class GraphMatrix;
 
 template <class NodeType, class EdgeType>
 class GEdge {
     friend class GNode<NodeType, EdgeType>;
     friend class Graph<NodeType, EdgeType>;
+    friend class GraphMatrix<NodeType, EdgeType>;
 
     public:
         GEdge()
@@ -26,6 +28,11 @@ class GEdge {
         }
         & operator EdgeType() { return key; }
         & operator const EdgeType() const { return key; }
+
+        friend std::ostream & operator << (std::ostream & stream, GEdge const & e) {
+            stream << "[" << e.key << "]" << *(e.from) << "-->" << *(e.to); 
+            return stream;
+        }
 
 
     public:

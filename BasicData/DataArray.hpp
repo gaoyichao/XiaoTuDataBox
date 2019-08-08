@@ -261,7 +261,7 @@ class DataArray {
             int n = array.size();
 
             if (this->capacity() < n) {
-                delete mStorBegin;
+                delete [] mStorBegin;
 
                 int c = array.capacity();
                 mStorBegin = new T[c];

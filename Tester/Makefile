@@ -23,6 +23,7 @@ TARGET += ${OUTPUT_PATH}/t_BinaryTree.exe
 TARGET += ${OUTPUT_PATH}/t_RBTree.exe
 TARGET += ${OUTPUT_PATH}/t_Dictionary.exe
 TARGET += ${OUTPUT_PATH}/t_Graph.exe
+TARGET += ${OUTPUT_PATH}/t_GraphMatrix.exe
 
 all: objs ${TARGET}
 
@@ -71,6 +72,10 @@ ${OUTPUT_PATH}/t_Dictionary.exe: t_Dictionary.o ${LIB_FILES}
 
 ${OUTPUT_PATH}/t_Graph.exe: t_Graph.o ${LIB_FILES}
 	g++ t_Graph.o ${LD_FLAGS} -o $@
+
+${OUTPUT_PATH}/t_GraphMatrix.exe: t_GraphMatrix.o ${LIB_FILES}
+	g++ t_GraphMatrix.o ${LD_FLAGS} -o $@
+
 
 -include ../build_tools/obj.mk
 
