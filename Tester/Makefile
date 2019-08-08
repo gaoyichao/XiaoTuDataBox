@@ -15,6 +15,7 @@ TARGET += ${OUTPUT_PATH}/t_s_queue.exe
 TARGET += ${OUTPUT_PATH}/t_list.exe
 TARGET += ${OUTPUT_PATH}/t_binary_tree.exe
 
+TARGET += ${OUTPUT_PATH}/t_Array2D.exe
 TARGET += ${OUTPUT_PATH}/t_DataArray.exe
 TARGET += ${OUTPUT_PATH}/t_DataList.exe
 TARGET += ${OUTPUT_PATH}/t_DataQueue.exe
@@ -46,6 +47,9 @@ ${OUTPUT_PATH}/t_list.exe: t_list.o ${LIB_FILES}
 ${OUTPUT_PATH}/t_binary_tree.exe: t_binary_tree.o ${LIB_FILES}
 	gcc t_binary_tree.o ${LD_FLAGS} -o $@
 
+
+${OUTPUT_PATH}/t_Array2D.exe: t_Array2D.o ${LIB_FILES}
+	g++ t_Array2D.o ${LD_FLAGS} -o $@
 
 ${OUTPUT_PATH}/t_DataArray.exe: t_DataArray.o ${LIB_FILES}
 	g++ t_DataArray.o ${LD_FLAGS} -o $@
