@@ -32,26 +32,25 @@ class Array2D {
         }
         void resize(int r, int c)
         {
-            if (0 == r || 0 == c) {
-                delete [] array;
-                array = NULL;
-                rows = 0;
-                cols = 0;
-            }
-
             if (r == rows && c == cols)
                 return;
 
             int n = r * c;
-            T * arr = new T[n];
-            int rr = (r < rows) ? r : rows;
-            int cc = (c < cols) ? c : cols;
+            T * arr = NULL;
+            if (n > 0)
+                arr = new T[n];
 
-            for (int i = 0; i < rr; i++)
-            for (int j = 0; j < cc; j++)
-                arr[i * cols + j] = array[i * cols + j];
 
-            delete [] array;
+            if (NULL != array) {
+                int rr = (r < rows) ? r : rows;
+                int cc = (c < cols) ? c : cols;
+
+                for (int i = 0; i < rr; i++)
+                for (int j = 0; j < cc; j++)
+                    arr[i * cols + j] = array[i * cols + j];
+
+                delete [] array;
+            }
 
             array = arr;
             rows = r;
@@ -63,7 +62,6 @@ class Array2D {
             assert(n < (rows * cols));
             return array[n];
         }
-
 
         T & at(int r, int c)
         {
@@ -118,6 +116,172 @@ class Array2D {
             return stream;
         }
 
+        bool insert_row(int r, int n, T const & v)
+        {
+            if (!insert_row(r, n))
+                return false;
+
+            for (int i = r; i < (r+n); i++)
+                for (int j = 0; j < cols; j++)
+                    array[i * cols + j] = v;
+
+            return true;
+        }
+
+        /*
+         * insert_row - 在@r行插入@n行
+         */
+        bool insert_row(int r, int n)
+        {
+            if (r > rows)
+                return false;
+
+            int nrows = rows + n;
+            int nsize = nrows * cols;
+            T * arr = new T[nsize];
+
+            for (int i = 0; i < r; i++)
+                for (int j = 0; j < cols; j++)
+                    arr[i * cols + j] = array[i * cols + j];
+
+            for (int i = (r+n); i < nrows; i++)
+                for (int j = 0; j < cols; j++)
+                    arr[i * cols + j] = array[(i-n) * cols + j];
+
+            delete [] array;
+            array = arr;
+            rows = nrows;
+            return true;
+        }
+
+        bool insert_column(int c, int n, T const & v)
+        {
+            if (!insert_column(c, n))
+                return false;
+
+            for (int i = 0; i < rows; i++)
+                for (int j = c; j < (c+n); j++)
+                    array[i * cols + j] = v;
+
+            return true;
+        }
+        /*
+         * insert_column - 在@c列插入@n列
+         */
+        bool insert_column(int c, int n)
+        {
+            if (c > cols)
+                return false;
+
+            int ncols = cols + n;
+            int nsize = rows * ncols;
+            T * arr = new T[nsize];
+
+            for (int j = 0; j < c; j++)
+                for (int i = 0; i < rows; i++)
+                    arr[i * ncols + j] = array[i * cols + j];
+
+            for (int j = (c+n); j < ncols; j++)
+                for (int i = 0; i < rows; i++)
+                    arr[i * ncols + j] = array[i * cols + j - n];
+
+            delete [] array;
+            array = arr;
+            cols = ncols;
+            return true;
+        }
+
+        bool remove_row(int r, int n)
+        {
+            if ((r + n - 1) >= rows || 0 == n || 0 == rows || 0 == cols)
+                return false;
+
+            int nrows = rows - n;
+            T * arr = NULL;
+            if (nrows > 0) {
+                int nsize = nrows * cols;
+                arr = new T[nsize];
+
+                for (int i = 0; i < r; i++)
+                    for (int j = 0; j < cols; j++)
+                        arr[i * cols + j] = array[i * cols + j];
+
+                for (int i = r; i < nrows; i++)
+                    for (int j = 0; j < cols; j++)
+                        arr[i * cols + j] = array[(i + n) * cols + j];
+            }
+
+            delete [] array;
+            array = arr;
+            rows = nrows;
+
+            return true;
+        }
+
+        bool remove_column(int c, int n)
+        {
+            if ((c + n - 1) >= cols || 0 == n || 0 == rows || 0 == cols)
+                return false;
+
+            int ncols = cols - n;
+            T * arr = NULL;
+            if (ncols > 0) {
+                int nsize = rows * ncols;
+                arr = new T[nsize];
+
+                for (int j = 0; j < c; j++)
+                    for (int i = 0; i < rows; i++)
+                        arr[i * ncols + j] = array[i * cols + j];
+
+                for (int j = c; j < ncols; j++)
+                    for (int i = 0; i < rows; i++)
+                        arr[i * ncols + j] = array[i * cols + j + n];
+            }
+
+            delete [] array;
+            array = arr;
+            cols = ncols;
+
+            return true;
+        }
+
+        bool swap_row(int r1, int r2)
+        {
+            if (r1 >= rows || r2 >= rows)
+                return false;
+
+            if(r1 == r2)
+                return true;
+
+            for (int j = 0; j < cols; j++) {
+                T tmp = array[r1 * cols + j];
+                array[r1 * cols + j] = array[r2 * cols + j];
+                array[r2 * cols + j] = tmp;
+            }
+
+            return true;
+        }
+
+        bool swap_column(int c1, int c2)
+        {
+            if (c1 >= cols || c2 >= cols)
+                return false;
+
+            if(c1 == c2)
+                return true;
+
+            for (int i = 0; i < rows; i++) {
+                T tmp = array[i * cols + c1];
+                array[i * cols + c1] = array[i * cols + c2];
+                array[i * cols + c2] = tmp;
+            }
+
+            return true;
+        }
+
+
+        int num_rows() const { return rows; }
+        int num_cols() const { return cols; }
         int size() const { return rows * cols; }
         int size(int & r, int & c) const
         {
