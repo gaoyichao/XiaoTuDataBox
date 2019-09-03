@@ -25,6 +25,19 @@ class DataArray {
             mStorEnd = mStorBegin + c;
             mEnd = mStorBegin + size;
         }
+
+        DataArray(int size, T const & v) {
+            int c = 4;
+            while (c < size)
+                c *= 2;
+
+            mStorBegin = new T[c];
+            mStorEnd = mStorBegin + c;
+            mEnd = mStorBegin + size;
+
+            for (int i = 0; i < size; i++)
+                mStorBegin[i] = v;
+        }
         /*
          * 构造函数
          *
