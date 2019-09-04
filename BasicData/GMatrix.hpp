@@ -52,14 +52,10 @@ class GMatrix
 
         bool add_node(int i, NodeType const key)
         {
-            std::cout << "key: " << key << std::endl;
-            if (0 != nodes.insert(i, key)) {
-                std::cout << __FUNCTION__ << std::endl;
+            if (0 != nodes.insert(i, key))
                 return false;
-            }
 
             int nv = nodes.size();
-            std::cout << "nv: " << nv << std::endl;
 
             if (!matrix.insert_row(i, 1))
                 return false;

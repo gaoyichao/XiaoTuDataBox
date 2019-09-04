@@ -22,7 +22,7 @@ class BinaryTreeBase {
         friend PreOrderIterator;
         friend InOrderIterator;
         friend PostOrderIterator;
-        friend DepthFirstIterator;
+        //friend DepthFirstIterator;
         friend BreadthFirstIterator;
     public:
         BinaryTreeBase() : mRoot(NULL) { }

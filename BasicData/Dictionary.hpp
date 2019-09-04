@@ -19,7 +19,7 @@ class DicBase {
         friend IteratorBase;
         friend PreOrderIterator;
         friend PostOrderIterator;
-        friend DepthFirstIterator;
+        //friend DepthFirstIterator;
         friend BreadthFirstIterator;
     public:
         DicBase() { mRoot.depth = -1; }
