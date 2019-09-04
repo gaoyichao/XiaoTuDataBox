@@ -6,7 +6,7 @@
 
 class DoubleIsZeroEdge {
     public:
-        bool operator() (double const & v)
+        bool operator() (double const & v) const
         {
             return std::isnan(v);
         }
@@ -20,14 +20,13 @@ class DoubleFillZeroEdge {
         }
 };
 
-
-
-
 TEST(GMatrix, init)
 {
     int no = 10;
 
     GMatrix<double, double, DoubleFillZeroEdge, DoubleIsZeroEdge> *gmatrix = new GMatrix<double, double, DoubleFillZeroEdge, DoubleIsZeroEdge>(no);
+    EXPECT_EQ(no, gmatrix->num_nodes());
+    EXPECT_EQ(0, gmatrix->num_edges());
 
     std::cout << *gmatrix << std::endl;
 
@@ -45,3 +44,20 @@ TEST(GMatrix, init)
 
     delete gmatrix;
 }
+
+
+TEST(GMatrix, add)
+{
+    GMatrix<double, double, DoubleFillZeroEdge, DoubleIsZeroEdge> *gmatrix = new GMatrix<double, double, DoubleFillZeroEdge, DoubleIsZeroEdge>();
+    EXPECT_EQ(0, gmatrix->num_nodes());
+    EXPECT_EQ(0, gmatrix->num_edges());
+    std::cout << *gmatrix << std::endl;
+
+    gmatrix->add_node(0, 1.2);
+    EXPECT_EQ(1, gmatrix->num_nodes());
+    EXPECT_EQ(0, gmatrix->num_edges());
+    std::cout << *gmatrix << std::endl;
+
+    delete gmatrix;
+}
+

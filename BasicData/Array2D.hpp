@@ -130,6 +130,9 @@ class Array2D {
 
         /*
          * insert_row - 在@r行插入@n行
+         *
+         * @r: 插入的起始行索引
+         * @n: 插入的行数
          */
         bool insert_row(int r, int n)
         {

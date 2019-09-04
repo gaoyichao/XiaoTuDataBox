@@ -101,7 +101,10 @@ TEST(DataArray, insert)
     datas[1] = 3.2;
     datas[2] = 5.2;
     datas[3] = 1.332;
-    DataArray<double> array(datas, 4);
+    DataArray<double> array;
+    EXPECT_EQ(array.size(), 0);
+    for (int i = 0; i < 4; i++)
+        array.insert(i, datas[i]);
     EXPECT_EQ(array.size(), 4);
 
     double pi = 3.1415926;

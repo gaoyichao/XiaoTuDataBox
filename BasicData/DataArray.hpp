@@ -116,6 +116,8 @@ class DataArray {
          */
         int resize(int size) {
             int cap = this->capacity();
+            if (0 == cap)
+                cap = 1;
             while (cap < size)
                 cap *= 2;
 
@@ -176,6 +178,7 @@ class DataArray {
             if (0 != err)
                 return err;
 
+            n = size();
             if (i < n) {
                 for (int idx = n; idx >= i; idx--)
                     mStorBegin[idx] = mStorBegin[idx-1];
