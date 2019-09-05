@@ -30,56 +30,71 @@ all: objs ${TARGET}
 
 ${OUTPUT_PATH}/t_array.exe: t_array.o ${LIB_FILES}
 	g++ t_array.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_s_array.exe: t_s_array.o ${LIB_FILES}
 	g++ t_s_array.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_queue.exe: t_queue.o ${LIB_FILES}
 	g++ t_queue.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_deque.exe: t_deque.o ${LIB_FILES}
 	g++ t_deque.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_s_queue.exe: t_s_queue.o ${LIB_FILES}
 	g++ t_s_queue.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_list.exe: t_list.o ${LIB_FILES}
 	gcc t_list.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_binary_tree.exe: t_binary_tree.o ${LIB_FILES}
 	gcc t_binary_tree.o ${LD_FLAGS} -o $@
-
+	$@
 
 ${OUTPUT_PATH}/t_Array2D.exe: t_Array2D.o ${LIB_FILES}
 	g++ t_Array2D.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_DataArray.exe: t_DataArray.o ${LIB_FILES}
 	g++ t_DataArray.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_DataList.exe: t_DataList.o ${LIB_FILES}
 	g++ t_DataList.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_DataQueue.exe: t_DataQueue.o ${LIB_FILES}
 	g++ t_DataQueue.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_BinaryTree.exe: t_BinaryTree.o ${LIB_FILES}
 	g++ t_BinaryTree.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_RBTree.exe: t_RBTree.o ${LIB_FILES}
 	g++ t_RBTree.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_Dictionary.exe: t_Dictionary.o ${LIB_FILES}
 	g++ t_Dictionary.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_Graph.exe: t_Graph.o ${LIB_FILES}
 	g++ t_Graph.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_GMatrix.exe: t_GMatrix.o ${LIB_FILES}
 	g++ t_GMatrix.o ${LD_FLAGS} -o $@
+	$@
 
 ${OUTPUT_PATH}/t_GraphMatrix.exe: t_GraphMatrix.o ${LIB_FILES}
 	g++ t_GraphMatrix.o ${LD_FLAGS} -o $@
-
+	$@
 
 -include ../build_tools/obj.mk
 

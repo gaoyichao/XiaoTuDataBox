@@ -178,6 +178,23 @@ TEST(DataArray, remove)
     EXPECT_EQ(array.size(), 0);
 }
 
+TEST(DataArray, swap)
+{
+    double datas[4];
+    datas[0] = 1.2;
+    datas[1] = 3.2;
+    datas[2] = 5.2;
+    datas[3] = 1.332;
+    DataArray<double> array(datas, 4);
+    EXPECT_EQ(array.size(), 4);
+
+    EXPECT_EQ(1, array.swap(0, 5));
+    EXPECT_EQ(0, array.swap(1, 0));
+
+    EXPECT_EQ(array[0], datas[1]);
+    EXPECT_EQ(array[1], datas[0]);
+}
+
 
 TEST(DataArray, stack)
 {

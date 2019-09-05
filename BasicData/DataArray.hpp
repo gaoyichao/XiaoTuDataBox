@@ -241,6 +241,17 @@ class DataArray {
             return remove(id, id+1);
         }
 
+        int swap(int i, int j) {
+            int n = size();
+            if (i >= n || j >= n)
+                return 1;
+
+            T tmp = mStorBegin[i];
+            mStorBegin[i] = mStorBegin[j];
+            mStorBegin[j] = tmp;
+            return 0;
+        }
+
         int push(T const & e) {
             if (full()) {
                 int ncap = this->capacity() * 2;

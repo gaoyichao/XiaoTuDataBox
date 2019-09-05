@@ -42,27 +42,23 @@ class GMatrix
 
         bool add_edge(int i, int j, EdgeType const key)
         {
-            if (IsConnected(i, j))
+            int nv = nodes.size();
+            if (i >= nv || j >= nv || IsConnected(i, j))
                 return false;
-
             matrix(i, j) = key;
-
             return true;
         }
 
         bool add_node(int i, NodeType const key)
         {
-            if (0 != nodes.insert(i, key))
-                return false;
-
             int nv = nodes.size();
-
-            if (!matrix.insert_row(i, 1))
+            if (i > nv || 0 != nodes.insert(i, key))
                 return false;
 
-            if (!matrix.insert_column(i, 1))
+            if (!matrix.insert_row(i, 1) || !matrix.insert_column(i, 1))
                 return false;
 
+            nv = nodes.size();
             for (int idx = 0; idx < nv; idx++) {
                 FillZeroEdge(matrix(idx, i));
                 FillZeroEdge(matrix(i, idx));
@@ -73,11 +69,34 @@ class GMatrix
 
         bool remove_edge(int i, int j)
         {
+            int nv = nodes.size();
+            if (i >= nv || j >= nv)
+                return false;
+
+            FillZeroEdge(matrix(i, j));
             return true;
         }
 
         bool remove_node(int i)
         {
+            int nv = nodes.size();
+            if (i > nv || 0 != nodes.remove(i, i+1))
+                return false;
+
+            if (!matrix.remove_row(i, 1) || !matrix.remove_column(i, 1))
+                return false;
+            return true;
+        }
+
+        bool swap_nodes(int i, int j)
+        {
+            int nv = nodes.size();
+            if (i >= nv || j >= nv)
+                return false;
+            if (0 != nodes.swap(i, j))
+                return false;
+            if (!matrix.swap_row(i, j) || !matrix.swap_column(i, j))
+                return false;
             return true;
         }
 
