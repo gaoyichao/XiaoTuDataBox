@@ -5,7 +5,7 @@
 #include <Array2D.hpp>
 #include <DataArray.hpp>
 
-template <class NodeType, class EdgeType, class FillZeroEdgeFunc, class IsZeroEdgeFunc>
+template <class NodeType, class EdgeType>
 class GMatrix
 {
     public:
@@ -14,19 +14,65 @@ class GMatrix
         {
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
-                    FillZeroEdge(matrix(i, j));
+                    matrix(i,j) = NULL;
+        }
+
+        ~GMatrix()
+        {
+            int n = nodes.size();
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    if (NULL != matrix(i, j))
+                        delete matrix(i, j);
         }
 
         friend std::ostream & operator << (std::ostream & stream, GMatrix const & gm)
         {
             stream << "nodes:" << std::hex << gm.nodes << std::dec << std::endl;
-            stream << std::hex << gm.matrix << std::dec;
+            stream << "edges:" << std::endl;
+
+            int nv = gm.nodes.size();
+            int c = nv;
+            if (nv <= 0)
+                return stream;
+
+            nv = nv - 1;
+            for (int i = 0; i < nv; i++) {
+                stream << "| ";
+                if (NULL == gm.matrix(i, 0))
+                    stream << "NULL";
+                else
+                    stream << *(gm.matrix(i,0));
+                for (int j = 1; j < c; j++) {
+                    stream << "\t";
+                    if (NULL == gm.matrix(i, j))
+                        stream << "NULL";
+                    else
+                        stream << *(gm.matrix(i, j));
+                }
+                stream << " |" << std::endl;
+            }
+
+            stream << "| ";
+            if (NULL == gm.matrix(nv, 0))
+                stream << "NULL";
+            else
+                stream << *(gm.matrix(nv, 0));
+            for (int j = 1; j < c; j++) {
+                stream << "\t";
+                if (NULL == gm.matrix(nv, j))
+                    stream << "NULL";
+                else
+                    stream << *(gm.matrix(nv, j));
+            }
+            stream << " |";
+
             return stream;
         }
 
         NodeType & operator () (int i) { return nodes(i); }
-        EdgeType & operator () (int i, int j) { return matrix(i, j); }
-        bool IsConnected(int i, int j) const { return !IsZeroEdge(matrix(i, j)); }
+        EdgeType * operator () (int i, int j) { return matrix(i, j); }
+        bool IsConnected(int i, int j) const { return NULL != matrix(i, j); }
 
         int num_nodes() const { return nodes.size(); }
         int num_edges()
@@ -45,7 +91,7 @@ class GMatrix
             int nv = nodes.size();
             if (i >= nv || j >= nv || IsConnected(i, j))
                 return false;
-            matrix(i, j) = key;
+            matrix(i, j) = new EdgeType(key);
             return true;
         }
 
@@ -60,8 +106,8 @@ class GMatrix
 
             nv = nodes.size();
             for (int idx = 0; idx < nv; idx++) {
-                FillZeroEdge(matrix(idx, i));
-                FillZeroEdge(matrix(i, idx));
+                matrix(idx, i) = NULL;
+                matrix(i, idx) = NULL;
             }
 
             return true;
@@ -73,7 +119,9 @@ class GMatrix
             if (i >= nv || j >= nv)
                 return false;
 
-            FillZeroEdge(matrix(i, j));
+            if (NULL != matrix(i, j))
+                delete matrix(i, j);
+            matrix(i,j) = NULL;
             return true;
         }
 
@@ -82,6 +130,11 @@ class GMatrix
             int nv = nodes.size();
             if (i > nv || 0 != nodes.remove(i, i+1))
                 return false;
+
+            for (int idx = 0; idx < nv; idx++) {
+                remove_edge(idx, i);
+                remove_edge(i, idx);
+            }
 
             if (!matrix.remove_row(i, 1) || !matrix.remove_column(i, 1))
                 return false;
@@ -102,11 +155,8 @@ class GMatrix
 
 
     protected:
-        Array2D<EdgeType> matrix;
+        Array2D<EdgeType*> matrix;
         DataArray<NodeType> nodes;
-
-        FillZeroEdgeFunc FillZeroEdge;
-        IsZeroEdgeFunc IsZeroEdge;
 };
 
 
