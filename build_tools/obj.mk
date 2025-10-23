@@ -1,6 +1,6 @@
 
-CFLAGS += ${DEBUG} -std=gnu99 -D_GNU_SOURCE ${INCLUDE_PATH}
-CPPFLAGS += ${DEBUG} -std=c++11 ${INCLUDE_PATH}
+CFLAGS += ${DEBUG} -std=c++17 -D_GNU_SOURCE ${INCLUDE_PATH}
+CPPFLAGS += ${DEBUG} -std=c++17 ${INCLUDE_PATH}
 
 C_FILE = $(wildcard *.c)
 OBJ = $(patsubst %.c, %.o,$(notdir ${C_FILE}))
